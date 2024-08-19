@@ -17,7 +17,7 @@ export const Header = () => {
           </li>
           <li>
             <Button variant={"outline"} size={"sm"} asChild>
-              <Link href="/auth/signup">Sign Up</Link>
+              <Link href="/auth/sign-up">Sign Up</Link>
             </Button>
           </li>
         </ul>

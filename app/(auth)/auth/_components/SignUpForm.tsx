@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signUpAction } from "@/lib/actions/signup.actions";
+import { signUpAction } from "@/lib/actions/signUp.actions";
 
 export const SignupForm = () => {
   const [success, setSuccess] = useState(false);
@@ -33,7 +33,8 @@ export const SignupForm = () => {
     const res = await signUpAction(values);
 
     if (res.success) {
-      reset();
+      // reset();
+      setSuccess(true);
       // router.push("/auth/signup/success");
     } else {
       switch (res.statusCode) {
@@ -54,11 +55,26 @@ export const SignupForm = () => {
     }
   };
 
+  if (success) {
+    return (
+      <div>
+        <p>User Successfully Cerated</p>
+
+        <span>
+          CLick {""}
+          <Button variant="link" size="sm" className="px-0" asChild>
+            <Link href={"/auth/sign-in"}>here</Link>
+          </Button>
+        </span>
+      </div>
+    );
+  }
+
   return (
     <Form {...form}>
       <form
         onSubmit={handleSubmit(submit)}
-        className="w-full max-w-[600px] space-y-4 px-20 "
+        className="w-full space-y-4 px-10 md:max-w-[600px] md:px-20"
         autoComplete="false"
       >
         <FormField
@@ -68,7 +84,7 @@ export const SignupForm = () => {
             <FormItem>
               <FormLabel>
                 Name{" "}
-                <span className="text-muted-foreground text-xs">
+                <span className="text-xs text-muted-foreground">
                   (Optional)
                 </span>
               </FormLabel>
@@ -135,6 +151,9 @@ export const SignupForm = () => {
           Sign Up
         </Button>
       </form>
+      <div className="mt-8 text-muted-foreground hover:underline">
+        <Link href="/auth/sign-in">Already have an account? Sign in</Link>
+      </div>
     </Form>
   );
 };

@@ -16,7 +16,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SigninInput, SigninSchema } from "@/validators/signin-validator";
-import { signInAction } from "@/lib/actions/signin.actions";
+import { signInAction } from "@/lib/actions/signIn.actions";
 
 export const SignInForm = () => {
   const [success, setSuccess] = useState(false);
@@ -44,7 +44,7 @@ export const SignInForm = () => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(submit)}
-        className="w-full max-w-[600px] space-y-4 px-20 "
+        className="w-full max-w-[600px] space-y-4 px-20"
         autoComplete="false"
       >
         <FormField
@@ -82,11 +82,14 @@ export const SignInForm = () => {
           type="submit"
           size={"lg"}
           disabled={formState.isSubmitting}
-          className="w-full "
+          className="w-full"
         >
           Sign In
         </Button>
       </form>
+      <div className="mt-8 text-muted-foreground hover:underline">
+        <Link href="/auth/sign-up">Don't have an account? Sign up</Link>
+      </div>
     </Form>
   );
 };
