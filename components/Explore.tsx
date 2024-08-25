@@ -2,18 +2,19 @@ import Image from 'next/image'
 import { ChevronRight } from 'lucide-react'
 
 const cities = [
-    { name: 'Atlanta, GA', image: 'https://images.pexels.com/photos/2409953/pexels-photo-2409953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Scottsdale, AZ', image: 'https://images.pexels.com/photos/5137664/pexels-photo-5137664.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Oakland, CA', image: 'https://images.pexels.com/photos/14417165/pexels-photo-14417165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Sandy Springs, GA', image: 'https://images.pexels.com/photos/5997993/pexels-photo-5997993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Carlsbad, CA', image: 'https://images.pexels.com/photos/13249340/pexels-photo-13249340.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Philadelphia, PA', image: 'https://images.pexels.com/photos/2549596/pexels-photo-2549596.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Quincy, MA', image: 'https://images.pexels.com/photos/14054631/pexels-photo-14054631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Austin, TX', image: 'https://images.pexels.com/photos/1167021/pexels-photo-1167021.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Boston, MA', image: 'https://images.pexels.com/photos/2129796/pexels-photo-2129796.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Newton, MA', image: 'https://images.pexels.com/photos/5997997/pexels-photo-5997997.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { name: 'Anaheim, CA', image: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-]
+    { name: 'Ikeja, Lagos State', image: 'https://images.pexels.com/photos/2409953/pexels-photo-2409953.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Abuja, FCT', image: 'https://images.pexels.com/photos/5137664/pexels-photo-5137664.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Port Harcourt, Rivers State', image: 'https://images.pexels.com/photos/14417165/pexels-photo-14417165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Ibadan, Oyo State', image: 'https://images.pexels.com/photos/5997993/pexels-photo-5997993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Enugu, Enugu State', image: 'https://images.pexels.com/photos/13249340/pexels-photo-13249340.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Kano, Kano State', image: 'https://images.pexels.com/photos/2549596/pexels-photo-2549596.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Abeokuta, Ogun State', image: 'https://images.pexels.com/photos/14054631/pexels-photo-14054631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Benin City, Edo State', image: 'https://images.pexels.com/photos/1167021/pexels-photo-1167021.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Calabar, Cross River State', image: 'https://images.pexels.com/photos/2129796/pexels-photo-2129796.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Kaduna, Kaduna State', image: 'https://images.pexels.com/photos/5997997/pexels-photo-5997997.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+    { name: 'Jos, Plateau State', image: 'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
+];
+
 
 const reviews = [
     {
@@ -50,7 +51,7 @@ export default function ExploreHomes() {
                         <div className="absolute bottom-0 left-0 p-4 text-white">
                             <h2 className="text-xl font-semibold mb-2">{city.name}</h2>
                             <button className="flex items-center text-sm bg-white text-black px-3 py-1 rounded">
-                                View Homes <ChevronRight className="w-4 h-4 ml-1" />
+                                View <ChevronRight className="w-4 h-4 ml-1" />
                             </button>
                         </div>
                     </div>

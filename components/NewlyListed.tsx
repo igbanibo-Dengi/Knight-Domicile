@@ -11,7 +11,7 @@ const listings = [
         beds: 2,
         baths: 1,
         sqft: 1776,
-        address: '333-335 Potrero Ave, San Francisco, CA 94103',
+        address: '333-335 Herbert Macaulay Way, Yaba, Lagos, Nigeria',
         label: 'NEW - 10 HRS AGO',
         agent: 'ANH HOANG PHAM DRE #01437135, SKYGROUP REALTY INC'
     },
@@ -22,7 +22,7 @@ const listings = [
         beds: 3,
         baths: 1,
         sqft: 1416,
-        address: '1216 Hampshire St, San Francisco, CA 94110',
+        address: '1216 Awolowo Road, Ikoyi, Lagos, Nigeria',
         label: 'NEW | OPEN SUN, 3-5PM',
         agent: 'ANTHONY R. NAVARRO DRE #01491847, HARPER REAL ESTATE'
     },
@@ -33,7 +33,7 @@ const listings = [
         beds: 4,
         baths: 2,
         sqft: 1167,
-        address: '51 Athens St, San Francisco, CA 94112',
+        address: '51 Adeniran Ogunsanya Street, Surulere, Lagos, Nigeria',
         label: 'NEW | OPEN SUN, 1-5PM',
         agent: 'MICHAEL BRIZZOLARA DRE #01761244, MARCH PROPERTIES'
     },
@@ -44,7 +44,7 @@ const listings = [
         beds: 1,
         baths: 1,
         sqft: 614,
-        address: '1288 Howard St #613, San Francisco, CA 94103',
+        address: '1288 Aminu Kano Crescent, Wuse 2, Abuja, Nigeria',
         label: 'NEW - 14 HRS AGO',
         agent: 'MICHAEL BRIZZOLARA DRE #01761244, MARCH PROPERTIES'
     },
@@ -55,7 +55,7 @@ const listings = [
         beds: 2,
         baths: 3,
         sqft: 1072,
-        address: '1288 Howard St #329, San Francisco, CA 94103',
+        address: '1288 Opebi Road #329, Ikeja, Lagos, Nigeria',
         label: 'NEW - 15 HRS AGO',
         agent: ''
     },
@@ -66,7 +66,7 @@ const listings = [
         beds: 5,
         baths: 4,
         sqft: 2940,
-        address: '10121 Ariel Eleno, Manor, TX 78653',
+        address: '10121 Admiralty Way, Lekki, Lagos, Nigeria',
         label: 'NEW - 17 HRS AGO',
         agent: ''
     },
@@ -77,7 +77,7 @@ const listings = [
         beds: 0,
         baths: 2,
         sqft: 1700,
-        address: 'Address Not Disclosed, San Francisco, CA 94131',
+        address: 'Address Not Disclosed, Victoria Island, Lagos, Nigeria',
         label: 'NEW | OPEN SUN, 2-4PM',
         agent: ''
     },
@@ -88,11 +88,12 @@ const listings = [
         beds: 0,
         baths: 2,
         sqft: 1700,
-        address: 'Address Not Disclosed, San Francisco, CA 94131',
+        address: 'Address Not Disclosed, Victoria Island, Lagos, Nigeria',
         label: 'NEW | OPEN SUN, 2-4PM',
         agent: ''
     },
-]
+];
+
 
 export default function NewlyListedHomes() {
     return (
@@ -116,7 +117,7 @@ export default function NewlyListedHomes() {
                                 </Badge>
                             </div>
                             <div className="p-4">
-                                <p className="text-2xl font-bold mb-2">${listing.price.toLocaleString()}</p>
+                                <p className="text-2xl font-bold mb-2">₦{listing.price.toLocaleString()}</p>
                                 <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
                                     <span className="flex items-center"><Bed className="w-4 h-4 mr-1" />{listing.beds}bd</span>
                                     <span className="flex items-center"><Bath className="w-4 h-4 mr-1" />{listing.baths}ba</span>
