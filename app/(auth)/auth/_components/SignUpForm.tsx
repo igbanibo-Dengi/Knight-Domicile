@@ -151,9 +151,6 @@ export const SignupForm = () => {
           Sign Up
         </Button>
       </form>
-      <div className="mt-8 text-muted-foreground hover:underline">
-        <Link href="/auth/sign-in">Already have an account? Sign in</Link>
-      </div>
     </Form>
   );
 };

@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SigninInput, SigninSchema } from "@/validators/signin-validator";
 import { signInAction } from "@/lib/actions/signIn.actions";
@@ -36,7 +35,12 @@ export const SignInForm = () => {
     if (res.success) {
       reset();
     } else {
-      console.log("this shouldnt be happening");
+      switch (res.statusCode) {
+        case 500:
+        default:
+          const error = res.error || "Internal Server Error";
+          setError("password", { message: error });
+      }
     }
   };
 
@@ -87,9 +91,6 @@ export const SignInForm = () => {
           Sign In
         </Button>
       </form>
-      <div className="mt-8 text-muted-foreground hover:underline">
-        <Link href="/auth/sign-up">Don't have an account? Sign up</Link>
-      </div>
     </Form>
   );
 };
