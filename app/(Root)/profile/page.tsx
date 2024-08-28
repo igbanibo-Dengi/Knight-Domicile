@@ -6,11 +6,8 @@ import Link from 'next/link';
 import React from 'react'
 
 const page = async () => {
-
     const session = await auth()
-
-    console.log(session);
-
+    // console.log(session);
     return (
         <main className='mt-4'>
             <div className='container'>

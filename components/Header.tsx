@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
+import { NavlLinks } from "./NavlLinks";
 
 export const Header = () => {
   return (
@@ -9,18 +10,7 @@ export const Header = () => {
         <h3 className="text-3xl tracking-tight font-bold">
           <Link href="/">Next.Js</Link>
         </h3>
-        <ul className="flex items-center gap-x-4">
-          <li>
-            <Button variant={"outline"} size={"sm"} asChild>
-              <Link href="/auth/sign-in">Sign In</Link>
-            </Button>
-          </li>
-          <li>
-            <Button variant={"outline"} size={"sm"} asChild>
-              <Link href="/auth/sign-up">Sign Up</Link>
-            </Button>
-          </li>
-        </ul>
+        <NavlLinks />
       </div>
     </nav>
   );
