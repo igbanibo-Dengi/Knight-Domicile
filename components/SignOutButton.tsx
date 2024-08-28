@@ -1,0 +1,17 @@
+"use client"
+
+import React from 'react'
+import { Button } from './ui/button'
+import { signoutAction } from '@/lib/actions/signout.actions'
+
+const SignOutButton = () => {
+    const onClickHandler = async () => {
+        await signoutAction();
+        window.location.href = "/"
+    }
+
+    return (
+        <Button onClick={onClickHandler}>Sign-Out</Button>
+    )
+}
+export default SignOutButton

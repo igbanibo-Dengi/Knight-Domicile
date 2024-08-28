@@ -1,10 +1,11 @@
 "use server"
 
 import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 
 type Res =
     | { success: true }
-    | { success: false; error: string; statusCode: 500 };
+    | { success: false; error: string; statusCode: 401 | 500 };
 
 export async function signInAction(values: unknown): Promise<Res> {
     try {
@@ -18,8 +19,15 @@ export async function signInAction(values: unknown): Promise<Res> {
         await signIn("credentials", { ...values, redirect: false });
 
     } catch (err) {
-        console.error(err)
-        return { success: false, error: "Internal Server Error", statusCode: 500 };
+        if (err instanceof AuthError) {
+            switch (err.type) {
+                case "CredentialsSignin":
+                case "CallbackRouteError":
+                    return { success: false, error: "Invalid Credentials", statusCode: 401 }
+                default:
+                    return { success: false, error: "Oops. Something went wrong", statusCode: 500 }
+            }
+        }
     }
 
     return { success: true }

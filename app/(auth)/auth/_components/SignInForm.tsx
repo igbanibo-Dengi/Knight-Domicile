@@ -33,9 +33,13 @@ export const SignInForm = () => {
     const res = await signInAction(values);
 
     if (res.success) {
-      reset();
+      // reset();
+      window.location.href = "/profile"
     } else {
       switch (res.statusCode) {
+        case 401:
+          setError("password", { message: res.error })
+          break;
         case 500:
         default:
           const error = res.error || "Internal Server Error";
