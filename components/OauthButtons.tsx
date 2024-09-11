@@ -3,7 +3,7 @@
 import { Button } from "./ui/button"
 import { GitHubIcon } from "./icons/auth.comp"
 import { GoogleIcon } from "./icons/auth.comp"
-import { oauthAction } from "@/lib/actions/oauth.actions"
+import { oauthAction } from "@/lib/actions/auth/oauth.actions"
 
 type OAuthButtonsProps = {
     signup?: boolean

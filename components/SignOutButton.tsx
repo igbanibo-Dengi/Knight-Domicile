@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Button } from './ui/button'
-import { signoutAction } from '@/lib/actions/signout.actions'
+import { signoutAction } from '@/lib/actions/auth/signout.actions'
 
 const SignOutButton = () => {
     const onClickHandler = async () => {

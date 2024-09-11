@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SigninInput, SigninSchema } from "@/validators/signin-validator";
-import { signInAction } from "@/lib/actions/signIn.actions";
+import { signInAction } from "@/lib/actions/auth/signIn.actions";
 
 export const SignInForm = () => {
   const [success, setSuccess] = useState(false);

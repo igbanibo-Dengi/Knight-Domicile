@@ -1,13 +1,29 @@
 import { auth } from '@/auth'
 import SignOutButton from '@/components/SignOutButton';
 import { Button } from '@/components/ui/button';
+// import { findUserByAuth, findUserById } from '@/resources/user.queries';
 import { type User } from 'next-auth';
 import Link from 'next/link';
 import React from 'react'
+import { UpdateUserForm } from './_components/update-user-form';
 
 const page = async () => {
     const session = await auth()
-    console.log(session);
+    // console.log(session);
+
+    // ***IF YOU WANT TO GET THE USER FROM THE DATABASE***
+    // let dbUser
+    // const sessionUserId = session?.user?.id
+    // if (sessionUserId) {
+    //     dbUser = await findUserById(sessionUserId)
+    //     console.log("db User:", dbUser);
+    // }
+
+    // ***IF YOU WANT TO GET THE USER FROM THE DATABASE VIA AUTH***
+    // const dbUser = await findUserByAuth()
+    // console.log(dbUser);
+
+
     return (
         <main className='mt-4'>
             <div className='container'>
@@ -22,10 +38,14 @@ const page = async () => {
 export default page
 
 
-const SignedIn = ({ user }: { user: User }) => {
+const SignedIn = async ({ user }: { user: User }) => {
+
     return (
         <>
-            <h2 className='text-2xl font-bold tracking-tight'>User Information</h2>
+            <div className='flex items-center justify-between'>
+                <h2 className='text-2xl font-bold tracking-tight'>User Information</h2>
+                <UpdateUserForm user={user} />
+            </div>
             <table className='mt-4 table-auto divide-y'>
                 <thead>
                     <tr className=' divide-x'>

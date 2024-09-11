@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signUpAction } from "@/lib/actions/signUp.actions";
+import { signUpAction } from "@/lib/actions/auth/signUp.actions";
 
 export const SignupForm = () => {
   const [success, setSuccess] = useState(false);

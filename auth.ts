@@ -9,7 +9,7 @@ import * as v from "valibot"
 import { SigninSchema } from "./validators/signin-validator";
 import { findUserByEmail } from "./resources/user.queries";
 import bcrypt from "bcrypt";
-import { oauthVerrifyEmail } from "./lib/actions/oauthVerifyEmail.actions"
+import { oauthVerrifyEmail } from "./lib/actions/auth/oauthVerifyEmail.actions"
 
 const nextAuth = NextAuth({
     adapter: DrizzleAdapter(db, {
@@ -23,7 +23,11 @@ const nextAuth = NextAuth({
     secret: process.env.AUTH_SECRET,
     pages: { signIn: "/auth/sign-in" },
     callbacks: {
-        jwt({ token, user }) {
+        jwt({ token, user, trigger, session }) {
+
+            if (trigger === "update") {
+                return { ...token, ...session.user }
+            }
             // console.log("user:", user);
             if (user?.id) { // User is available during sign-in
                 token.id = user.id
