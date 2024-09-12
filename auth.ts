@@ -10,6 +10,7 @@ import { SigninSchema } from "./validators/signin-validator";
 import { findUserByEmail } from "./resources/user.queries";
 import bcrypt from "bcrypt";
 import { oauthVerrifyEmail } from "./lib/actions/auth/oauthVerifyEmail.actions"
+import { OAuthAccountAlreadyLinkedError } from "./lib/custom-errors"
 
 const nextAuth = NextAuth({
     adapter: DrizzleAdapter(db, {
@@ -43,7 +44,26 @@ const nextAuth = NextAuth({
             session.user.id = token.id
             session.user.role = token.role
             return session
-        }
+        },
+        // ALLOW ONLY VERIFIED USERS
+        signIn({ user, account, profile }) {
+            if (account?.provider === "google") {
+                return !!profile?.email_verified
+            }
+
+            if (account?.provider === "github") {
+                return true
+            }
+
+            if (account?.provider === "credentials") {
+                if (user.emailVerified) {
+                    // return true
+                }
+                return true
+            }
+
+            return false
+        },
     },
     events: {
         async linkAccount({ user, account }) {
@@ -65,8 +85,8 @@ const nextAuth = NextAuth({
                     // look for our user in the database
                     const user = await findUserByEmail(email)
                     if (!user) return null
-                    if (!user.password) return null
-                    console.log(user);
+                    if (!user.password) throw new OAuthAccountAlreadyLinkedError();
+                    // console.log(user);
                     // Use bcrypt to compare the password
                     const passwordsMatch = await bcrypt.compareSync(password, user.password);
 
@@ -80,11 +100,13 @@ const nextAuth = NextAuth({
         }),
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            allowDangerousEmailAccountLinking: true   // default state is false. (error handling for false case is taken care of)
         }),
         Github({
             clientId: process.env.GITHUB_CLIENT_ID,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+            allowDangerousEmailAccountLinking: true   // default state is false. (error handling for false case is taken care of)
         })
     ]
 });
