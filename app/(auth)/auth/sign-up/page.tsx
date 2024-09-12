@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { SignupForm } from "../_components/SignUpForm";
 import { Button } from "@/components/ui/button";
-import OAuthButtons from "@/components/OauthButtons";
+import OAuthButtons, { OAuthButtonsSkeleton } from "@/components/OauthButtons";
+import { Suspense } from "react";
 
 const SignUpPage = () => {
   return (
@@ -14,7 +15,9 @@ const SignUpPage = () => {
           <SignupForm />
 
           {/* OAUTH BUTTONS */}
-          <OAuthButtons signup />
+          <Suspense fallback={<OAuthButtonsSkeleton signup />} >
+            <OAuthButtons signup />
+          </Suspense>
 
           <Button
             variant={"link"}

@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { SignInForm } from "../_components/SignInForm";
 import Link from "next/link";
-import OAuthButtons from "@/components/OauthButtons";
+import OAuthButtons, { OAuthButtonsSkeleton } from "@/components/OauthButtons";
+import { Suspense } from "react";
 
 const SignInPage = () => {
   return (
@@ -13,7 +14,9 @@ const SignInPage = () => {
           <SignInForm />
 
           {/* Oauth Buttons */}
-          <OAuthButtons />
+          <Suspense fallback={<OAuthButtonsSkeleton />}>
+            <OAuthButtons />
+          </Suspense>
 
           {/* redirrect */}
           <Button

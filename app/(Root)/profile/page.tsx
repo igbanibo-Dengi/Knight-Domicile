@@ -6,9 +6,13 @@ import { type User } from 'next-auth';
 import Link from 'next/link';
 import React from 'react'
 import { UpdateUserForm } from './_components/update-user-form';
+import { redirect } from 'next/navigation';
 
 const page = async () => {
     const session = await auth()
+
+    // if (!session) {redirect("/")}****** Alternative to middleware
+
     // console.log(session);
 
     // ***IF YOU WANT TO GET THE USER FROM THE DATABASE***

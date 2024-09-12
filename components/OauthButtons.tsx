@@ -61,9 +61,33 @@ const OAuthButtons = ({ signup }: OAuthButtonsProps) => {
                     {errMessage}
                 </p>
             )}
-
         </div>
     )
 }
 
 export default OAuthButtons
+
+type OAuthButtonsSkeletonProps = OAuthButtonsProps
+
+export const OAuthButtonsSkeleton = ({ signup }: OAuthButtonsSkeletonProps) => {
+
+    const text = signup ? "Sign-up" : "Sign in"
+    return (
+        <div className="w-[410px] flex flex-col gap-4">
+            <Button
+                variant={"outline"}
+                className="w-full flex items-center gap-4"
+            >
+                <GoogleIcon />
+                {text} with Google
+            </Button>
+            <Button
+                variant={"outline"}
+                className="w-full flex items-center gap-4"
+            >
+                <GitHubIcon />
+                {text} with GitHub
+            </Button>
+        </div>
+    )
+}
