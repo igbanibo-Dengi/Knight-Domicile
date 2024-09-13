@@ -4,7 +4,7 @@ import db from "@/drizzle"
 import { users } from "@/drizzle/schema"
 import { and, eq, isNull } from "drizzle-orm"
 
-export async function oauthVerrifyEmail(email: string) {
+export async function oauthVerifyEmailAction(email: string) {
     const exisitngUser = await db
         .select({ id: users.id })
         .from(users)
