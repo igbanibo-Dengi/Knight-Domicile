@@ -7,6 +7,7 @@ import Link from 'next/link';
 import React from 'react'
 import { UpdateUserForm } from './_components/update-user-form';
 import { redirect } from 'next/navigation';
+import { findUserByAuth, findUserByEmail } from '@/resources/user.queries';
 
 const page = async () => {
     const session = await auth()
@@ -23,7 +24,7 @@ const page = async () => {
     //     console.log("db User:", dbUser);
     // }
 
-    // ***IF YOU WANT TO GET THE USER FROM THE DATABASE VIA AUTH***
+    // // ***IF YOU WANT TO GET THE USER FROM THE DATABASE VIA AUTH***
     // const dbUser = await findUserByAuth()
     // console.log(dbUser);
 
@@ -43,6 +44,9 @@ export default page
 
 
 const SignedIn = async ({ user }: { user: User }) => {
+    // ***IF YOU WANT TO GET THE USER FROM THE DATABASE VIA AUTH***
+    const dbUser = await findUserByAuth()
+    console.log(dbUser);
 
     return (
         <>
@@ -61,10 +65,10 @@ const SignedIn = async ({ user }: { user: User }) => {
                 </thead>
                 <tbody>
                     <tr className='divide-x'>
-                        <td className='px-6 py-3'>{user.name || null}</td>
-                        <td className='px-6 py-3'>{user.email}</td>
-                        <td className='px-6 py-3'>{user.role}</td>
-                        <td className='px-6 py-3'>{user.id || null}</td>
+                        <td className='px-6 py-3'>{dbUser.name || null}</td>
+                        <td className='px-6 py-3'>{dbUser.email}</td>
+                        <td className='px-6 py-3'>{dbUser.role}</td>
+                        <td className='px-6 py-3'>{dbUser.id || null}</td>
                     </tr>
                 </tbody>
             </table>

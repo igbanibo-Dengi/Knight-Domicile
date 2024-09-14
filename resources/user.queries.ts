@@ -3,9 +3,9 @@ import db from "@/drizzle"
 import { lower, users } from "@/drizzle/schema"
 import {
     eq,
-    // getTableColumns
+    getTableColumns,
 } from "drizzle-orm"
-// import { auth } from "@/auth"
+import { auth } from "@/auth"
 
 
 // FIND USER BY EMAIL
@@ -40,21 +40,21 @@ export const findUserByEmail = async (email: string): Promise<typeof users.$infe
 
 // FIND USER BY AUTH
 
-// export const findUserByAuth = async () => {
-//     const session = await auth()
+export const findUserByAuth = async () => {
+    const session = await auth()
 
-//     const sessionUserId = session?.user?.id;
-//     if (!sessionUserId) throw new Error("Unauthorized")
+    const sessionUserId = session?.user?.id;
+    if (!sessionUserId) throw new Error("Unauthorized")
 
-//     const { password, ...rest } = getTableColumns(users)
+    const { password, ...rest } = getTableColumns(users)
 
-//     const user = await db
-//         .select(rest)
-//         .from(users)
-//         .where(eq(users.id, sessionUserId))
-//         .then((res) => res[0] ?? null)
+    const user = await db
+        .select(rest)
+        .from(users)
+        .where(eq(users.id, sessionUserId))
+        .then((res) => res[0] ?? null)
 
-//     if (!user) throw new Error("User not foind");
+    if (!user) throw new Error("User not foind");
 
-//     return user
-// }
+    return user
+}

@@ -5,16 +5,40 @@ import Github from "next-auth/providers/github";
 import db from "@/drizzle";
 import * as schema from "@/drizzle/schema";
 import { oauthVerifyEmailAction } from "./lib/actions/auth/oauthVerifyEmail.actions";
+import { USER_ROLES } from "./lib/constants";
+import { changeUserRoleAction } from "./lib/actions/auth/change-user-role.actions";
+import type { AdapterUser } from "@auth/core/adapters";
+import { getTableColumns } from "drizzle-orm";
+import { findAdminUserEmailAddresses } from "./resources/admin-user-email-address-queries";
 
 
 export const authConfig = {
-    adapter: DrizzleAdapter(db, {
-        accountsTable: schema.accounts,
-        usersTable: schema.users,
-        authenticatorsTable: schema.authenticators,
-        sessionsTable: schema.sessions,
-        verificationTokensTable: schema.verificationTokens,
-    }),
+    adapter: {
+        ...DrizzleAdapter(db, {
+            accountsTable: schema.accounts,
+            usersTable: schema.users,
+            authenticatorsTable: schema.authenticators,
+            sessionsTable: schema.sessions,
+            verificationTokensTable: schema.verificationTokens,
+        }),
+        async createUser(data: AdapterUser) {
+            const { id, ...insertData } = data;
+            const hasDefaultId = getTableColumns(schema.users)["id"]["hasDefault"];
+
+            const adminEmails = await findAdminUserEmailAddresses();
+            const isAdmin = adminEmails.includes(insertData.email.toLowerCase());
+
+            if (isAdmin) {
+                insertData.role = isAdmin ? USER_ROLES.ADMIN : USER_ROLES.USER;
+            }
+
+            return db
+                .insert(schema.users)
+                .values(hasDefaultId ? insertData : { ...insertData, id })
+                .returning()
+                .then((res) => res[0]);
+        }
+    },
     session: { strategy: "jwt" },
     secret: process.env.AUTH_SECRET,
     pages: { signIn: "/auth/sign-in" },
@@ -39,19 +63,16 @@ export const authConfig = {
             return true
 
         },
-        jwt({ token, user, trigger, session }) {
+        async jwt({ token, user, trigger, session }) {
 
             if (trigger === "update") {
                 return { ...token, ...session.user }
             }
-            // console.log("user:", user);
             if (user?.id) { // User is available during sign-in
                 token.id = user.id
-                // console.log(user.id);
             }
             if (user?.role) { // User is available during sign-in
                 token.role = user.role
-                // console.log(user.role);
             }
             return token
         },
@@ -86,7 +107,7 @@ export const authConfig = {
                 // verify email of Oauth accounts
                 if (user.email) await oauthVerifyEmailAction(user.email)
             }
-        }
+        },
     },
     providers: [
         Google({

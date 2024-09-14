@@ -6,6 +6,8 @@ import bcrypt from 'bcrypt'
 import db from '@/drizzle'
 import { lower, users } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
+import { USER_ROLES } from '@/lib/constants'
+import { findAdminUserEmailAddresses } from '@/resources/admin-user-email-address-queries'
 
 type Res =
     | { success: true }
@@ -42,20 +44,26 @@ export async function signUpAction(values: unknown): Promise<Res> {
 
     try {
         // Hash password with bcrypt
-        const hashedPassword = await bcrypt.hash(password, 10)
-        // console.log({ name, email, password: hashedPassword });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const adminEmails = await findAdminUserEmailAddresses();
+        const isAdmin = adminEmails.includes(email.toLowerCase());
+
 
         //Save user to database
         const newUser = await db
             .insert(users)
             .values({
-                name, email, password: hashedPassword
+                name,
+                email,
+                password: hashedPassword,
+                role: isAdmin ? USER_ROLES.ADMIN : USER_ROLES.USER
             })
             .returning({ id: users.id })
             .then((res) => res[0])
 
-        // console.log({ insetedId: newUser.id });
+        console.log({ inseredId: newUser.id });
 
+        return { success: true }
 
     } catch (err) {
         console.error(err)
