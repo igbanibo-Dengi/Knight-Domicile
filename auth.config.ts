@@ -6,7 +6,6 @@ import db from "@/drizzle";
 import * as schema from "@/drizzle/schema";
 import { oauthVerifyEmailAction } from "./lib/actions/auth/oauthVerifyEmail.actions";
 import { USER_ROLES } from "./lib/constants";
-import { changeUserRoleAction } from "./lib/actions/auth/change-user-role.actions";
 import type { AdapterUser } from "@auth/core/adapters";
 import { getTableColumns } from "drizzle-orm";
 import { findAdminUserEmailAddresses } from "./resources/admin-user-email-address-queries";

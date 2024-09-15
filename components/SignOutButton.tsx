@@ -11,7 +11,7 @@ const SignOutButton = () => {
     }
 
     return (
-        <Button onClick={onClickHandler}>Sign Out</Button>
+        <Button variant={"destructive"} onClick={onClickHandler}>Sign Out</Button>
     )
 }
 export default SignOutButton

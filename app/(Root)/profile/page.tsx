@@ -8,31 +8,22 @@ import React from 'react'
 import { UpdateUserForm } from './_components/update-user-form';
 import { redirect } from 'next/navigation';
 import { findUserByAuth, findUserByEmail } from '@/resources/user.queries';
+import { USER_ROLES } from '@/lib/constants';
+import { LockIcon } from 'lucide-react';
 
 const page = async () => {
     const session = await auth()
-
-    // if (!session) {redirect("/")}****** Alternative to middleware
-
-    // console.log(session);
-
-    // ***IF YOU WANT TO GET THE USER FROM THE DATABASE***
-    // let dbUser
-    // const sessionUserId = session?.user?.id
-    // if (sessionUserId) {
-    //     dbUser = await findUserById(sessionUserId)
-    //     console.log("db User:", dbUser);
-    // }
-
-    // // ***IF YOU WANT TO GET THE USER FROM THE DATABASE VIA AUTH***
-    // const dbUser = await findUserByAuth()
-    // console.log(dbUser);
-
+    const isAdmin = session?.user?.role === USER_ROLES.ADMIN
 
     return (
         <main className='mt-4'>
             <div className='container'>
-                <h1 className="text-3xl font-bold tracking-light">Profile</h1>
+                <span className='flex items-center justify-between'>
+                    <h1 className="text-3xl font-bold tracking-light">Profile</h1>
+                    {isAdmin &&
+                        <DashboardButton />
+                    }
+                </span>
                 <div className="my-4 h-1 bg-muted" />
                 {!!session?.user ? <SignedIn user={session.user} /> : <SignedOut />}
             </div>
@@ -46,7 +37,7 @@ export default page
 const SignedIn = async ({ user }: { user: User }) => {
     // ***IF YOU WANT TO GET THE USER FROM THE DATABASE VIA AUTH***
     const dbUser = await findUserByAuth()
-    console.log(dbUser);
+    // console.log(dbUser);
 
     return (
         <>
@@ -89,5 +80,17 @@ const SignedOut = () => {
             </Button>
         </>
 
+    )
+}
+
+
+export const DashboardButton = () => {
+    return (
+        <Button size={"lg"} asChild>
+            <Link href={"/dashboard"}>
+                <LockIcon className='mr-2' />
+                Dashboard
+            </Link>
+        </Button>
     )
 }
