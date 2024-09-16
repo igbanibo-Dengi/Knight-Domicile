@@ -1,13 +1,11 @@
 import { auth } from '@/auth'
 import SignOutButton from '@/components/SignOutButton';
 import { Button } from '@/components/ui/button';
-// import { findUserByAuth, findUserById } from '@/resources/user.queries';
 import { type User } from 'next-auth';
 import Link from 'next/link';
 import React from 'react'
 import { UpdateUserForm } from './_components/update-user-form';
-import { redirect } from 'next/navigation';
-import { findUserByAuth, findUserByEmail } from '@/resources/user.queries';
+import { findUserByAuth } from '@/resources/user.queries';
 import { USER_ROLES } from '@/lib/constants';
 import { LockIcon } from 'lucide-react';
 
@@ -21,7 +19,12 @@ const page = async () => {
                 <span className='flex items-center justify-between'>
                     <h1 className="text-3xl font-bold tracking-light">Profile</h1>
                     {isAdmin &&
-                        <DashboardButton />
+                        <Button size={"lg"} asChild>
+                            <Link href={"/dashboard"}>
+                                <LockIcon className='mr-2' />
+                                Dashboard
+                            </Link>
+                        </Button>
                     }
                 </span>
                 <div className="my-4 h-1 bg-muted" />
@@ -37,7 +40,6 @@ export default page
 const SignedIn = async ({ user }: { user: User }) => {
     // ***IF YOU WANT TO GET THE USER FROM THE DATABASE VIA AUTH***
     const dbUser = await findUserByAuth()
-    // console.log(dbUser);
 
     return (
         <>
@@ -80,17 +82,5 @@ const SignedOut = () => {
             </Button>
         </>
 
-    )
-}
-
-
-export const DashboardButton = () => {
-    return (
-        <Button size={"lg"} asChild>
-            <Link href={"/dashboard"}>
-                <LockIcon className='mr-2' />
-                Dashboard
-            </Link>
-        </Button>
     )
 }
