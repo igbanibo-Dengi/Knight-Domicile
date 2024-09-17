@@ -23,7 +23,7 @@ const SignInPage = () => {
               asChild
             >
               <Link href="/auth/sign-up" className="text-center w-full">
-                Don&apos;t have an account?<span className="text-primary ml-1"> Sign in</span>
+                Don&apos;t have an account?<span className="text-primary ml-1"> Sign Up</span>
               </Link>
             </Button>
             {/* Forgot Password Dialog
