@@ -4,19 +4,19 @@ import { VERIFICATION_TOKEN_EXP_MIN } from "@/lib/constants";
 import transport from "@/lib/nodemailer";
 
 export async function sendSignupUserEmail({
-    email,
-    token,
+  email,
+  token,
 }: {
-    email: string;
-    token: string;
+  email: string;
+  token: string;
 }) {
-    console.log(`Sending email to ${email} with token ${token}`);
+  // console.log(`Sending email to ${email} with token ${token}`);
 
-    await transport.sendMail({
-        from: `"Next Template" <${process.env.NODEMAILER_GOOGLE_SMTP_USER}>`,
-        to: email,
-        subject: "Verify your email address",
-        html: `
+  await transport.sendMail({
+    from: `"Next Template" <${process.env.NODEMAILER_GOOGLE_SMTP_USER}>`,
+    to: email,
+    subject: "Verify your email address",
+    html: `
     <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px;">
       <h2 style="text-align: center; color: #3b82f6;">Authy</h2>
 
@@ -35,7 +35,7 @@ export async function sendSignupUserEmail({
       <p style="text-align: center; font-size: 12px; color: #aaa;">&copy; 2024 Authy. All rights reserved.</p>
     </div>
     `,
-    });
+  });
 
-    console.log(`Email send to ${email} with token ${token}`);
+  console.log(`Email send to ${email} with token ${token}`);
 }

@@ -63,7 +63,7 @@ export async function resetPasswordAction(
     try {
         // const hashedPassword = await argon2.hash(password);
         const hashedPassword = await bcrypt.hash(password, 10);
-        console.log(hashedPassword);
+        // console.log(hashedPassword);
 
 
         await db

@@ -65,14 +65,12 @@ export const ForgotPasswordForm = () => {
 
     return (
         <Dialog>
-            <div className="flex items-center gap-2 text-muted-foreground text-center w-fit mx-auto">
-                Forgot your password? Click{" "}
-                <DialogTrigger asChild>
-                    <Button variant="link" className="px-0 text-base ">
-                        here
-                    </Button>
-                </DialogTrigger>
-            </div>
+
+            <DialogTrigger asChild>
+                <div className="px-0 text-sm text-muted-foreground  text-right cursor-pointer hover:underline hover:text-foreground">
+                    Forgot password?
+                </div>
+            </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Enter Your Email</DialogTitle>

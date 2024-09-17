@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SigninInput, SigninSchema } from "@/validators/signin-validator";
 import { signInAction } from "@/lib/actions/auth/signIn.actions";
+import { ForgotPasswordForm } from "./forgot-password-form";
 
 export const SignInForm = () => {
   const [success, setSuccess] = useState(false);
@@ -86,6 +87,7 @@ export const SignInForm = () => {
             </FormItem>
           )}
         />
+        <ForgotPasswordForm />
         <Button
           type="submit"
           size={"lg"}

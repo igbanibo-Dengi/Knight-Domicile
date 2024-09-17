@@ -41,7 +41,7 @@ const OAuthButtons = ({ signup }: OAuthButtonsProps) => {
             <div className="mb-4">
                 <p className="text-center text-muted-foreground font-semibold">or</p>
             </div>
-            <div className="md:max-w-[600px] md:px-20 mx-auto flex gap-4 ">
+            <div className="md:max-w-[600px] px-10 md:px-20 mx-auto flex gap-4 ">
                 <Button
                     onClick={handleCLick.bind(null, "google")}
                     // onClick={() => handleCLick("google")}
