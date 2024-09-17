@@ -65,7 +65,7 @@ export const ForgotPasswordForm = () => {
 
     return (
         <Dialog>
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2 text-muted-foreground text-center w-fit mx-auto">
                 Forgot your password? Click{" "}
                 <DialogTrigger asChild>
                     <Button variant="link" className="px-0 text-base ">

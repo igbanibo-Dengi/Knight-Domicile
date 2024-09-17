@@ -8,29 +8,27 @@ import { ForgotPasswordForm } from "../_components/forgot-password-form";
 const SignInPage = () => {
   return (
     <main className="h-full w-full">
-      <div className="flex h-screen w-full items-center justify-center gap-10">
+      <div className="flex h-screen w-full items-center justify-center">
         <div className="flex h-full w-full flex-col gap-4 items-center justify-center border-r-2 lg:w-1/2">
           <h1>Sign In</h1>
-          {/* sign in forrm */}
-          <SignInForm />
+          <div className="w-full space-y-4">
+            <SignInForm />
+            <Suspense fallback={<OAuthButtonsSkeleton />}>
+              <OAuthButtons />
+            </Suspense>
 
-          {/* Oauth Buttons */}
-          <Suspense fallback={<OAuthButtonsSkeleton />}>
-            <OAuthButtons />
-          </Suspense>
-
-          {/* redirrect */}
-          <Button
-            variant={"link"}
-            className="text-muted-foreground"
-            asChild
-          >
-            <Link href="/auth/sign-up">
-              Don&apos;t have an account? Sign up
-            </Link>
-          </Button>
-          {/* Forgot Password Dialog */}
-          <ForgotPasswordForm />
+            <Button
+              variant={"link"}
+              className="text-muted-foreground"
+              asChild
+            >
+              <Link href="/auth/sign-up" className="text-center w-full">
+                Don&apos;t have an account? Sign up
+              </Link>
+            </Button>
+            {/* Forgot Password Dialog */}
+            <ForgotPasswordForm />
+          </div>
         </div>
         <div className="hidden h-screen lg:flex lg:w-1/2"></div>
       </div>
