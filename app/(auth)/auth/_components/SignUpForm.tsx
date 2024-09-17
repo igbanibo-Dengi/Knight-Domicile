@@ -33,9 +33,7 @@ export const SignupForm = () => {
     const res = await signUpAction(values);
 
     if (res.success) {
-      // reset();
-      setSuccess(true);
-      // router.push("/auth/signup/success");
+      router.push("/auth/sign-up/success")
     } else {
       switch (res.statusCode) {
         case 400:

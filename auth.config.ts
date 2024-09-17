@@ -92,9 +92,8 @@ export const authConfig = {
 
             if (account?.provider === "credentials") {
                 if (user.emailVerified) {
-                    // return true
+                    return true
                 }
-                return true
             }
 
             return false

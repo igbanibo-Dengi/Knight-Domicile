@@ -8,6 +8,8 @@ import { lower, users } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { USER_ROLES } from '@/lib/constants'
 import { findAdminUserEmailAddresses } from '@/resources/admin-user-email-address-queries'
+import { createVerificationTokenAction } from '../admin/create-verification-token-action'
+import { sendSignupUserEmail } from './mail/send-signup-user-email'
 
 type Res =
     | { success: true }
@@ -27,14 +29,30 @@ export async function signUpAction(values: unknown): Promise<Res> {
 
     // Case-insensitive email handling in PostgreSQL with Drizzle
     try {
-        const exixstingUser = await db
-            .select({ id: users.id })
+        const existingUser = await db
+            .select({ id: users.id, email: users.email, emailVerified: users.emailVerified })
             .from(users)
             .where(eq(lower(users.email), email.toLowerCase()))
             .then(res => res[0] ?? null);
 
-        if (exixstingUser?.id) {
-            return { success: false, error: "A user with this email already exists", statusCode: 409 }
+        if (existingUser?.id) {
+            if (!existingUser.emailVerified) {
+                const verificationToken = await createVerificationTokenAction(existingUser.email)
+                // send vefification email
+                await sendSignupUserEmail({
+                    email: existingUser.email,
+                    token: verificationToken.token
+                })
+
+
+                return {
+                    success: false,
+                    error: "User exists, but is not verified. Verification link resent. Check your email",
+                    statusCode: 409
+                }
+            } else {
+                return { success: false, error: "A user with this email already exists", statusCode: 409 }
+            }
         }
     } catch (err) {
         console.error(err);
@@ -45,6 +63,7 @@ export async function signUpAction(values: unknown): Promise<Res> {
     try {
         // Hash password with bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
+
         const adminEmails = await findAdminUserEmailAddresses();
         const isAdmin = adminEmails.includes(email.toLowerCase());
 
@@ -58,10 +77,21 @@ export async function signUpAction(values: unknown): Promise<Res> {
                 password: hashedPassword,
                 role: isAdmin ? USER_ROLES.ADMIN : USER_ROLES.USER
             })
-            .returning({ id: users.id })
+            .returning({ id: users.id, email: users.email, emailVerified: users.emailVerified })
             .then((res) => res[0])
 
-        console.log({ inseredId: newUser.id });
+        // console.log({ inseredId: newUser.id });
+
+        const verificationToken = await createVerificationTokenAction(newUser.email)
+        console.log(verificationToken);
+
+        await sendSignupUserEmail({
+            email: newUser.email,
+            token: verificationToken.token
+        })
+
+        // send verification email
+
 
         return { success: true }
 
