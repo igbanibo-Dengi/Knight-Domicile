@@ -22,7 +22,7 @@ const page = async () => {
                         <Button size={"lg"} asChild>
                             <Link href={"/dashboard"}>
                                 <LockIcon className='mr-2' />
-                                Dashboard
+                                Admin Dashboard
                             </Link>
                         </Button>
                     }
