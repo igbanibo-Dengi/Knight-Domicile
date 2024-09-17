@@ -3,6 +3,7 @@ import { SignInForm } from "../_components/SignInForm";
 import Link from "next/link";
 import OAuthButtons, { OAuthButtonsSkeleton } from "@/components/OauthButtons";
 import { Suspense } from "react";
+import { ForgotPasswordForm } from "../_components/forgot-password-form";
 
 const SignInPage = () => {
   return (
@@ -28,6 +29,8 @@ const SignInPage = () => {
               Don&apos;t have an account? Sign up
             </Link>
           </Button>
+          {/* Forgot Password Dialog */}
+          <ForgotPasswordForm />
         </div>
         <div className="hidden h-screen lg:flex lg:w-1/2"></div>
       </div>
