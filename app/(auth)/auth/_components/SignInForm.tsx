@@ -35,7 +35,7 @@ export const SignInForm = () => {
 
     if (res.success) {
       // reset();
-      window.location.href = "/profile"
+      window.location.href = "/"
     } else {
       switch (res.statusCode) {
         case 401:

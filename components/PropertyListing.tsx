@@ -1,8 +1,13 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { ArrowLeft, Share2, Heart, Bed, Bath, Square, MapPin } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import Link from 'next/link'
-import propertyData from './mockData';
+import propertyData from './mockData'
+import { ImageLightbox } from './image-lightbox'
+import { ImageCarousel } from './image-carousel'
 
 export default function PropertyListing() {
     const {
@@ -12,49 +17,82 @@ export default function PropertyListing() {
         description,
         propertyInfo,
         tourInfo
-    } = propertyData;  // Destructure the data
+    } = propertyData
+
+    const [lightboxOpen, setLightboxOpen] = useState(false)
+    const [initialImageIndex, setInitialImageIndex] = useState(0)
+    const [isMobile, setIsMobile] = useState(false)
+
+    const allImages = [mainImage, ...additionalImages]
+
+    useEffect(() => {
+        const checkIfMobile = () => {
+            setIsMobile(window.innerWidth < 768)
+        }
+        checkIfMobile()
+        window.addEventListener('resize', checkIfMobile)
+        return () => window.removeEventListener('resize', checkIfMobile)
+    }, [])
+
+    const openLightbox = (index: number) => {
+        setInitialImageIndex(index)
+        setLightboxOpen(true)
+    }
 
     return (
         <div className="container mx-auto p-4">
             <div className="flex items-center mb-4">
-                <Button variant="ghost" className="mr-auto">
+                <Button variant="ghost" className="mr-auto hidden md:block">
                     <Link href={"/"} className='flex items-center gap-2'>
                         <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" /> Back to Search
                     </Link>
                 </Button>
-                <Button variant="ghost" className="mr-2">For Sale</Button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="md:col-span-2 relative">
-                    <Image
-                        src={mainImage.src}
-                        alt={mainImage.alt}
-                        width={1260}
-                        height={750}
-                        className="w-full h-[400px] object-cover rounded-lg"
-                    />
-                    <div className="absolute top-4 left-4 bg-blue-600 text-white px-2 py-1 rounded">FOR SALE</div>
-                    <div className="absolute top-4 right-4 flex space-x-2">
-                        <Button size="sm" variant="secondary" aria-label="Share Property"><Share2 className="h-4 w-4 mr-1" /> Share</Button>
-                        <Button size="sm" variant="secondary" aria-label="Save Property"><Heart className="h-4 w-4 mr-1" /> Save</Button>
+                <div className="flex items-center gap-2 justify-between w-full md:w-fit">
+                    <Button size={"sm"} className='md:hidden' >For Sale</Button>
+                    <div className='flex items-center gap-2'>
+                        <Button size="sm" variant="secondary" aria-label="Share Property"><Share2 className="h-4 w-4" /> Share</Button>
+                        <Button size="sm" variant="secondary" aria-label="Save Property"><Heart className="h-4 w-4" /> Save</Button>
                     </div>
                 </div>
-                <div className="hidden md:grid grid-cols-2 gap-2">
-                    {additionalImages.map((img, index) => (
-                        <Image
-                            key={index}
-                            src={img.src}
-                            alt={img.alt}
-                            width={400}
-                            height={300}
-                            className="w-full h-[195px] object-cover rounded-lg"
-                        />
-                    ))}
-                </div>
             </div>
+            {isMobile ? (
+                <ImageCarousel images={allImages} onImageClick={openLightbox} />
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div className="md:col-span-2 relative">
+                        <Image
+                            src={mainImage.src}
+                            alt={mainImage.alt}
+                            width={1260}
+                            height={750}
+                            className="w-full h-[400px] object-cover rounded-lg cursor-pointer"
+                            onClick={() => openLightbox(0)}
+                        />
+                        <div className="absolute top-4 left-4 bg-blue-600 text-white px-2 py-1 rounded">FOR SALE</div>
+                    </div>
+                    <div className="hidden md:grid grid-cols-2 gap-2">
+                        {additionalImages.map((img, index) => (
+                            <Image
+                                key={index}
+                                src={img.src}
+                                alt={img.alt}
+                                width={400}
+                                height={300}
+                                className="w-full h-[195px] object-cover rounded-lg cursor-pointer"
+                                onClick={() => openLightbox(index + 1)}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
+            <ImageLightbox
+                images={allImages}
+                initialIndex={initialImageIndex}
+                isOpen={lightboxOpen}
+                onClose={() => setLightboxOpen(false)}
+            />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 items-center w-full mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 items-center w-full mb-6 mt-10">
                 <div className='w-full col-span-2'>
                     <div className='flex items-center justify-between'>
                         <h1 className="text-3xl font-bold mb-2">29 Park Dr</h1>
@@ -119,8 +157,6 @@ export default function PropertyListing() {
                     </div>
                 </div>
             </div>
-
-
         </div>
     )
 }

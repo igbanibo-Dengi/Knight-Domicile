@@ -56,7 +56,7 @@ export const authConfig = {
 
             if (isOnAuth) {
                 if (!isLoggedIn) return true;
-                return Response.redirect(new URL("/profile", nextUrl))
+                return Response.redirect(new URL("/", nextUrl))
             }
 
             return true
