@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { CheckCircle } from "lucide-react"
+import Image from "next/image"
 
 export default function Page() {
     return (
@@ -30,7 +31,21 @@ export default function Page() {
                         </Button>
                     </div>
                 </div>
-                <div className="hidden h-screen lg:flex lg:w-1/2 bg-muted"></div>
+                <div className="hidden lg:flex lg:w-1/2 h-screen relative">
+                    <Image
+                        src="/images/auth.jpg"
+                        alt="People working together in an office"
+                        layout="fill"
+                        objectFit="cover "
+                        priority
+                        className='w-full'
+                    />
+                    {/* <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+            <p className="text-white text-3xl font-bold text-center px-4">
+              Join our community of professionals
+            </p>
+          </div> */}
+                </div>
             </div>
         </main>
     )

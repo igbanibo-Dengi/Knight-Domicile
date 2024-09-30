@@ -87,7 +87,6 @@ export const SignInForm = () => {
             </FormItem>
           )}
         />
-        <ForgotPasswordForm />
         <Button
           type="submit"
           size={"lg"}

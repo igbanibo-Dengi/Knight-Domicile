@@ -3,6 +3,7 @@ import { SignupForm } from "../_components/SignUpForm";
 import { Button } from "@/components/ui/button";
 import OAuthButtons, { OAuthButtonsSkeleton } from "@/components/OauthButtons";
 import { Suspense } from "react";
+import Image from "next/image";
 
 const SignUpPage = () => {
   return (
@@ -25,11 +26,20 @@ const SignUpPage = () => {
             </Button>
           </div>
         </div>
-        <div className="hidden h-screen lg:flex lg:w-1/2">
-          <div className="relative h-full w-full bg-slate-950">
-            <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]">
-            </div>
-          </div>
+        <div className="hidden lg:flex lg:w-1/2 h-screen relative">
+          <Image
+            src="/images/auth.jpg"
+            alt="People working together in an office"
+            layout="fill"
+            objectFit="cover "
+            priority
+            className='w-full'
+          />
+          {/* <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+            <p className="text-white text-3xl font-bold text-center px-4">
+              Join our community of professionals
+            </p>
+          </div> */}
         </div>
       </div>
     </main>

@@ -19,7 +19,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { forgotPasswordAction } from "@/lib/actions/auth/forgot-password-action";
-import { ForgotPasswordInput, ForgotPasswordSchema } from "@/validators/forgot-password-validator";
+import {
+    ForgotPasswordInput,
+    ForgotPasswordSchema,
+} from "@/validators/forgot-password-validator";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -65,9 +68,8 @@ export const ForgotPasswordForm = () => {
 
     return (
         <Dialog>
-
             <DialogTrigger asChild>
-                <div className="px-0 text-sm text-muted-foreground  text-right cursor-pointer hover:underline hover:text-foreground">
+                <div className="cursor-pointer px-0 text-center text-sm text-muted-foreground hover:text-foreground hover:underline">
                     Forgot password?
                 </div>
             </DialogTrigger>

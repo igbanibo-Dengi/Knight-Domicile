@@ -5,7 +5,7 @@ import { isRedirectError } from "next/dist/client/components/redirect"
 
 export async function oauthAction(provider: "google" | "github") {
     try {
-        await signIn(provider, { redirectTo: "/profile" })
+        await signIn(provider, { redirectTo: "/" })
     } catch (err) {
         if (isRedirectError(err)) {
             throw err
