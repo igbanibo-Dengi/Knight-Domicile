@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
-import { ChartPie, HelpCircle, LayoutDashboard, Loader, Rss, User2, User2Icon } from "lucide-react";
+import { ChartPie, CircleUserRound, HelpCircle, LayoutDashboard, Loader, Rss, User2, User2Icon } from "lucide-react";
 
 import { User } from "next-auth";
 import SignOutButton from "./SignOutButton";
@@ -57,47 +57,43 @@ export const SignedIn = ({ user }: { user: User }) => {
                     About
                 </Link>
             </div>
-            <div className="flex items-center gap-2">
-                <Popover>
-                    <PopoverTrigger>
-                        <span className="bg-muted-foreground text-white flex items-center justify-center size-8 md:size-8 rounded-full">
+            <Popover>
+                <PopoverTrigger className="hidden md:block">
+                    <Button variant={"secondary"} className="text-base capitalize">
+                        {/* <span className="bg-muted-foreground text-white flex items-center justify-center size-8 md:size-8 rounded-full"> */}
+                        <CircleUserRound className="mr-2" strokeWidth={1.5} />
+                        {user?.name ?? <CircleUserRound />}
+                    </Button>
+                    {/* </span> */}
+                </PopoverTrigger>
+                <PopoverContent className="mr-10 p-0">
+                    <div className="flex items-center gap-4 p-4 border-b-2">
+                        <span className="bg-primary text-white flex items-center justify-center size-12 rounded-full">
                             {user?.name?.[0] ?? <User2Icon />}
                         </span>
-                    </PopoverTrigger>
-                    <PopoverContent className="mr-10 p-0">
-                        <div className="flex items-center gap-4 p-4 border-b-2">
-                            <span className="bg-muted-foreground text-white flex items-center justify-center size-12 rounded-full">
-                                {user?.name?.[0] ?? <User2Icon />}
-                            </span>
-                            <div className="">
-                                <p className="text-lg font-semibold">{user?.name}</p>
-                                <p className="text-muted-foreground text-sm">{user?.email}</p>
-                            </div>
+                        <div className="">
+                            <p className="text-lg capitalize font-semibold">{user?.name}</p>
+                            <p className="text-muted-foreground text-sm">{user?.email}</p>
                         </div>
-                        <div className="p-4 flex flex-col gap-4">
+                    </div>
+                    <div className="p-4 flex flex-col gap-4">
 
-                            <Button variant="ghost" className="w-full justify-start" asChild>
-                                <Link href={"/overview/profile"}>
-                                    <User2 className="mr-2 h-5 w-5" />
-                                    Your Profile
-                                </Link>
-                            </Button>
-                            <Button variant="ghost" className="w-full justify-start" asChild>
-                                <Link href={"/"}>
-                                    <HelpCircle className="mr-2 h-5 w-5" />
-                                    Help & Support
-                                </Link>
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                className="w-full justify-start"
-                            >
-                                <SignOutButton />
-                            </Button>
-                        </div>
-                    </PopoverContent>
-                </Popover>
-            </div>
+                        <Button variant="ghost" className="w-full justify-start" asChild>
+                            <Link href={"/overview/profile"}>
+                                <User2 className="mr-2 h-5 w-5" />
+                                Your Profile
+                            </Link>
+                        </Button>
+                        <Button variant="ghost" className="w-full justify-start" asChild>
+                            <Link href={"/"}>
+                                <HelpCircle className="mr-2 h-5 w-5" />
+                                Help & Support
+                            </Link>
+                        </Button>
+                        <SignOutButton />
+                    </div>
+                </PopoverContent>
+            </Popover>
         </div>
     );
 };

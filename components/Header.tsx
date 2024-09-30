@@ -2,18 +2,23 @@ import Link from "next/link";
 import React from "react";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { AlignJustify } from "lucide-react";
+import { AlignJustify, CircleUserRound } from "lucide-react";
 import { NavlLinks } from "./NavlLinks";
 import { auth } from "@/auth";
+import { Button } from "./ui/button";
+import SignOutButton from "./SignOutButton";
 
 export const Header = async () => {
   const links = [
     { href: "/", label: "Explore" },
     { href: "/saved", label: "Saved" },
     { href: "/about", label: "About" },
+    { href: "/profile", label: "Profile" },
+    { href: "/help", label: "Help & Support" },
   ];
 
 
@@ -34,7 +39,28 @@ export const Header = async () => {
               <AlignJustify className="mr-2" />
             </SheetTrigger>
             <SheetContent>
-              <NavlLinks user={user!} />
+              <div className="flex flex-col gap-4 mt-8 h-[90%]">
+                {links.map((link, index) => (
+                  <SheetClose asChild key={index}>
+                    <Link href={link.href} className="text-lg w-full text-left">
+                      {link.label}
+                    </Link>
+                  </SheetClose>
+                ))}
+
+                <div className="mt-auto w-full">
+                  <div className="flex items-center gap-4 p-4 mb-2 bg-muted rounded-md">
+                    <span className="bg-primary text-white flex items-center justify-center size-12 rounded-full">
+                      {user?.name?.[0] ?? <CircleUserRound />}
+                    </span>
+                    <div className="">
+                      <p className="text-lg capitalize font-semibold">{user?.name}</p>
+                      <p className="text-muted-foreground text-sm">{user?.email}</p>
+                    </div>
+                  </div>
+                  <SignOutButton />
+                </div>
+              </div>
             </SheetContent>
           </Sheet>
         </div>
