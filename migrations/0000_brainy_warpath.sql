@@ -37,6 +37,31 @@ CREATE TABLE IF NOT EXISTS "authenticator" (
 	CONSTRAINT "authenticator_credentialID_unique" UNIQUE("credentialID")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "property" (
+	"id" text PRIMARY KEY NOT NULL,
+	"price" numeric(15, 2) NOT NULL,
+	"state" text NOT NULL,
+	"city" text NOT NULL,
+	"lat" numeric(10, 8) NOT NULL,
+	"lon" numeric(11, 8) NOT NULL,
+	"plots" integer NOT NULL,
+	"size" numeric NOT NULL,
+	"description" text NOT NULL,
+	"isLand" boolean,
+	"beds" integer NOT NULL,
+	"baths" integer,
+	"rooms" integer,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"adminId" text NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "saved_property" (
+	"userId" text NOT NULL,
+	"propertyId" text NOT NULL,
+	CONSTRAINT "saved_property_userId_propertyId_pk" PRIMARY KEY("userId","propertyId")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
 	"sessionToken" text PRIMARY KEY NOT NULL,
 	"userId" text NOT NULL,
@@ -68,6 +93,24 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "authenticator" ADD CONSTRAINT "authenticator_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "property" ADD CONSTRAINT "property_adminId_user_id_fk" FOREIGN KEY ("adminId") REFERENCES "public"."user"("id") ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "saved_property" ADD CONSTRAINT "saved_property_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "saved_property" ADD CONSTRAINT "saved_property_propertyId_property_id_fk" FOREIGN KEY ("propertyId") REFERENCES "public"."property"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

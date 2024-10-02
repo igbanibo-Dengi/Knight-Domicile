@@ -9,6 +9,7 @@ import {
     pgEnum,
     type AnyPgColumn,
     uniqueIndex,
+    numeric,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -118,3 +119,44 @@ export const authenticators = pgTable(
         }),
     }),
 );
+
+
+
+
+export const properties = pgTable("property", {
+    id: text("id")
+        .primaryKey()
+        .$defaultFn(() => crypto.randomUUID()),
+    price: numeric("price", { precision: 15, scale: 2 }).notNull(),
+    state: text("state").notNull(),
+    city: text("city").notNull(),
+    lat: numeric("lat", { precision: 10, scale: 8 }).notNull(),
+    lon: numeric("lon", { precision: 11, scale: 8 }).notNull(),
+    plots: integer("plots"),
+    size: numeric("size"),
+    description: text("description").notNull(),
+    isLand: boolean("isLand"),
+    beds: integer("beds"),
+    baths: integer("baths"),
+    rooms: integer("rooms"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    adminId: text("adminId")
+        .notNull()
+        .references(() => users.id, { onDelete: "set null" }),
+});
+
+
+// Table to store saved/bookmarked properties
+export const savedProperties = pgTable("saved_property", {
+    userId: text("userId")
+        .notNull()
+        .references(() => users.id, { onDelete: "cascade" }), // Reference to the user who saved the property
+    propertyId: text("propertyId")
+        .notNull()
+        .references(() => properties.id, { onDelete: "cascade" }), // Reference to the saved property
+}, (table) => ({
+    compoundKey: primaryKey({
+        columns: [table.userId, table.propertyId], // Composite primary key to ensure a user can't save the same property multiple times
+    }),
+}));

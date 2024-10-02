@@ -1,16 +1,9 @@
-'use client'
+"use client";
 
-import { auth } from "@/auth"
-import { Button } from "@/components/ui/button"
-import { USER_ROLES } from "@/lib/constants"
-import { cn } from "@/lib/utils"
-import { findAllUsers } from "@/resources/user.queries"
-import { ArrowLeftSquareIcon } from "lucide-react"
-import Link from "next/link"
-import { redirect } from "next/navigation"
-// import { ToggleEmailVerifiedInput } from "./_componenets/toggle-verified-email-input"
-// import { ChangeUserRoleInput } from "./_componenets/change-user-role-input"
-import { useState } from "react"
+import { Button } from "@/components/ui/button";
+import { USER_ROLES } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -22,7 +15,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 import {
   Table,
   TableBody,
@@ -30,76 +23,95 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ChangeUserRoleInput } from "@/app/(Root)/dashboard/_componenets/change-user-role-input"
-import { ToggleEmailVerifiedInput } from "@/app/(Root)/dashboard/_componenets/toggle-verified-email-input"
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+import { Eye, Loader } from "lucide-react";
+import { ToggleEmailVerifiedInput } from "@/app/(Root)/dashboard/_componenets/toggle-verified-email-input";
+import { ChangeUserRoleInput } from "@/app/(Root)/dashboard/_componenets/change-user-role-input";
 
 type User = {
-  id: string
-  name: string | null
-  email: string
-  emailVerified: boolean
-  role: string
-}
+  id: string;
+  name: string | null;
+  email: string;
+  emailVerified: boolean;
+  role: string;
+};
 
-const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-    cell: ({ row }) => <div className="font-medium">{row.getValue("id")}</div>,
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => (
-      <div className={cn({ "opacity-50": row.getValue("name") === null })}>
-        {row.getValue("name") ?? "NULL"}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-    cell: ({ row }) => <div>{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "emailVerified",
-    header: "Email Verified",
-    cell: ({ row }) => (
-      <ToggleEmailVerifiedInput
-        email={row.getValue("email")}
-        emailVerified={row.getValue("emailVerified")}
-        isAdmin={row.getValue("role") === USER_ROLES.ADMIN}
-      />
-    ),
-  },
-  {
-    accessorKey: "role",
-    header: "Role",
-    cell: ({ row }) => (
-      <ChangeUserRoleInput
-        email={row.getValue("email")}
-        currentRole={row.getValue("role")}
-        isAdmin={row.getValue("role") === USER_ROLES.ADMIN}
-      />
-    ),
-  },
-]
+
 
 export function AdminPanelComponent({ users }: any) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = useState({})
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [message, setMessage] = useState('')
+  const [loading, setIsloading] = useState(false)
 
-  // const users = await findAllUsers()
+  // console.log(users.map((user: User) => user.id));
+
+
+
+
+  const columns: ColumnDef<User>[] = [
+    {
+      accessorKey: "id",
+      header: "ID",
+      cell: ({ row }) => <div className="font-medium">{row.getValue("id")}</div>,
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => (
+        <div className={cn({ "opacity-50": row.getValue("name") === null })}>
+          {row.getValue("name") ?? "NULL"}
+        </div>
+      ),
+    },
+    {
+      accessorKey: "email",
+      header: "Email",
+      cell: ({ row }) => <div>{row.getValue("email")}</div>,
+    },
+    {
+      accessorKey: "emailVerified",
+      header: "Email Verified",
+      cell: ({ row }) => (
+        <ToggleEmailVerifiedInput
+          email={row.getValue("email")}
+          emailVerified={row.getValue("emailVerified")}
+          isAdmin={row.getValue("role") === USER_ROLES.ADMIN}
+        />
+      ),
+    },
+    {
+      accessorKey: "role",
+      header: "Role",
+      cell: ({ row }) => (
+        <ChangeUserRoleInput
+          email={row.getValue("email")}
+          currentRole={row.getValue("role")}
+          isAdmin={row.getValue("role") === USER_ROLES.ADMIN}
+        />
+      ),
+    },
+    {
+      accessorKey: "view",
+      header: "View",
+      cell: ({ row }) => (
+        <Link href={`admin-panel/${row.getValue("id")}`}>
+          <Eye />
+        </Link>
+      ),
+    },
+  ];
+
 
   const table = useReactTable({
     data: users,
@@ -118,19 +130,11 @@ export function AdminPanelComponent({ users }: any) {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <main className="mt-4">
-      <div className="container">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Admin Panel</h1>
-        </div>
-
-        <div className="my-4 h-1 bg-muted" />
-        <h2 className="text-2xl font-bold tracking-tight">All Users</h2>
-
-        <div className="my-4 h-1 bg-muted" />
+      <div className="">
         <div className="flex items-center py-4">
           <Input
             placeholder="Filter emails..."
@@ -162,7 +166,7 @@ export function AdminPanelComponent({ users }: any) {
                     >
                       {column.id}
                     </DropdownMenuCheckboxItem>
-                  )
+                  );
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -179,10 +183,10 @@ export function AdminPanelComponent({ users }: any) {
                           ? null
                           : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                       </TableHead>
-                    )
+                    );
                   })}
                 </TableRow>
               ))}
@@ -194,14 +198,15 @@ export function AdminPanelComponent({ users }: any) {
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     className={cn({
-                      "bg-primary/15": row.getValue("role") === USER_ROLES.ADMIN,
+                      "bg-primary/15":
+                        row.getValue("role") === USER_ROLES.ADMIN,
                     })}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     ))}
@@ -246,5 +251,5 @@ export function AdminPanelComponent({ users }: any) {
         </div>
       </div>
     </main>
-  )
+  );
 }

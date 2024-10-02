@@ -79,7 +79,7 @@ export const SignedIn = ({ user }: { user: User }) => {
                     <div className="p-4 flex flex-col gap-4">
 
                         <Button variant="ghost" className="w-full justify-start" asChild>
-                            <Link href={"/overview/profile"}>
+                            <Link href={"/profile"}>
                                 <User2 className="mr-2 h-5 w-5" />
                                 Your Profile
                             </Link>

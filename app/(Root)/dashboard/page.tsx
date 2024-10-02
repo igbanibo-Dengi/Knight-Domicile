@@ -3,6 +3,9 @@ import { USER_ROLES } from "@/lib/constants";
 import { redirect } from "next/navigation";
 import { findAllUsers } from "@/resources/user.queries";
 import { AdminPanelComponent } from "@/components/admin-panel";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 export default async function Page() {
     const session = await auth();
@@ -12,8 +15,19 @@ export default async function Page() {
     const users = await findAllUsers();
 
     return (
-        <main className="mt-4">
-
+        <main className="mt-4 container">
+            <div className="my-4 h-1 bg-muted" />
+            <div className="flex items-center justify-between ">
+                <h2 className="text-2xl font-bold tracking-tight">All Users</h2>
+                <div>
+                    <Button asChild>
+                        <Link href={"/create"}>
+                            <Plus />  New
+                        </Link>
+                    </Button>
+                </div>
+            </div>
+            <div className="my-4 h-1 bg-muted" />
             <AdminPanelComponent users={users} />
         </main>
     );
