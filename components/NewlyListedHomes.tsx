@@ -58,7 +58,7 @@ const NewlyListedHomesContent = async () => {
             <div className="text-center py-12">
                 <AlertCircle className="mx-auto h-12 w-12 text-red-500 mb-4" />
                 <h2 className="text-2xl font-semibold mb-2">Oops! Something went wrong</h2>
-                <p className="text-gray-500 mb-4">We couldn't fetch the latest properties. Please try again later.</p>
+                <p className="text-gray-500 mb-4">We couldn&apos;t fetch the latest properties. Please try again later.</p>
                 <Button onClick={() => window.location.reload()}>Retry</Button>
             </div>
         )
