@@ -167,10 +167,6 @@ export default function PropertyListing({
                             <p>{size}</p>
                         </span>
                         <span className='flex items-center justify-between'>
-                            <p>Price per sq ft</p>
-                            <p>${(price / size).toFixed(2)}</p>
-                        </span>
-                        <span className='flex items-center justify-between'>
                             <p>Type</p>
                             <p>{type}</p>
                         </span>
