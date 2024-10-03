@@ -121,18 +121,23 @@ export const authenticators = pgTable(
 );
 
 
-
+export const statusEnum = pgEnum("status", ["rent", "sale"]);
+export const typeEnum = pgEnum("type", ["residential", "commercial", "agricultural", "mixed-use"]);
 
 export const properties = pgTable("property", {
     id: text("id")
         .primaryKey()
         .$defaultFn(() => crypto.randomUUID()),
+    images: text("images").array().notNull(),  // images array
     price: numeric("price", { precision: 15, scale: 2 }).notNull(),
     state: text("state").notNull(),
+    status: statusEnum("status").notNull().default("sale"),
     city: text("city").notNull(),
-    lat: numeric("lat", { precision: 10, scale: 8 }).notNull(),
-    lon: numeric("lon", { precision: 11, scale: 8 }).notNull(),
+    streetAddress: text("streetAddress").notNull(),
+    lat: numeric("lat", { precision: 10, scale: 8 }),
+    lon: numeric("lon", { precision: 11, scale: 8 }),
     plots: integer("plots"),
+    type: typeEnum("type").notNull().default("residential"),
     size: numeric("size"),
     description: text("description").notNull(),
     isLand: boolean("isLand"),

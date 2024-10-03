@@ -1,4 +1,6 @@
+
 import PropertyForm from '@/components/PropertyForm'
+import { UploadButton } from '@/lib/uploadthing'
 import { findUserByAuth } from '@/resources/user.queries'
 import React from 'react'
 

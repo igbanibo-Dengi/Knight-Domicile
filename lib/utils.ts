@@ -49,3 +49,7 @@ export function divideNumbers(a: string, b: string): number {
   }
   return aValue / bValue;
 }
+
+
+
+export const convertFileToUrl = (file: File) => URL.createObjectURL(file)

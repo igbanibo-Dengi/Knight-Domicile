@@ -31,7 +31,7 @@ export async function createProperty(values: unknown): Promise<Res> {
         return { success: false, error: flatErrors, statusCode: 400 };
     }
 
-    const { price, state, city, lat, lon, plots, size, description, isLand, beds, baths, rooms, adminId } = parsedValues.output;
+    const { images, price, state, status, city, streetAddress, lat, lon, plots, type, size, description, isLand, beds, baths, rooms, adminId } = parsedValues.output;
 
 
     const newPrice = convertNumberToString(price)
@@ -51,12 +51,16 @@ export async function createProperty(values: unknown): Promise<Res> {
         const [createdProperty] = await db
             .insert(properties)
             .values({
+                images,
                 price: newPrice,
                 state,
+                status,
                 city,
+                streetAddress,
                 lat: lat ?? null,
                 lon: lon ?? null,
                 plots: plots ?? null,
+                type,
                 size: size,
                 description,
                 isLand,
