@@ -11,6 +11,7 @@ import { NavlLinks } from "./NavlLinks";
 import { auth } from "@/auth";
 import { Button } from "./ui/button";
 import SignOutButton from "./SignOutButton";
+import { useRouter } from "next/router";
 
 export const Header = async () => {
   const links = [
@@ -27,7 +28,7 @@ export const Header = async () => {
   const user = session?.user;
 
   return (
-    <nav className="h-14 md:py-8">
+    <nav className="h-14 md:py-8 fixed z-20 w-full bg-background">
       <div className=" sm:container max-w-[1800px] flex justify-between items-center h-full px-2">
         <h3 className="text-3xl font-bold tracking-tight">
           <Link href="/">Knight</Link>

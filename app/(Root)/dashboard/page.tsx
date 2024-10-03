@@ -21,8 +21,8 @@ export default async function Page() {
                 <h2 className="text-2xl font-bold tracking-tight">All Users</h2>
                 <div>
                     <Button asChild>
-                        <Link href={"/create"}>
-                            <Plus />  New
+                        <Link href={"/dashboard/admin-panel/create"}>
+                            <Plus size={16} className="mr-2" />  New
                         </Link>
                     </Button>
                 </div>

@@ -1,8 +1,17 @@
+import { findAllProperties } from '@/resources/property-queries'
 import React from 'react'
 
-const page = () => {
+const page = async () => {
+
+    const properties = await findAllProperties()
+
+    console.log(properties);
+
+
     return (
-        <div>page</div>
+        <div className='container'>
+            page
+        </div>
     )
 }
 

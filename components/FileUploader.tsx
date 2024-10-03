@@ -91,9 +91,14 @@ export function FileUploader({ images, onFieldChange, setFiles }: FileUploaderPr
                 </div>
             )}
 
-            <Button type="button" variant="outline" className="mt-4">
+            <Button
+                type="button"
+                variant="outline"
+                className={`mt-4 ${previewImages.length > 4 ? " hidden" : ""}`}
+            >
                 {previewImages.length > 0 ? "Add more images" : "Select images"}
             </Button>
+
         </div>
     )
 }

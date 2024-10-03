@@ -23,6 +23,11 @@ const nextConfig = {
         hostname: "media.dev.to",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+        port: "",
+      },
     ],
   },
 };

@@ -12,7 +12,7 @@ const page = async () => {
 
 
     return (
-        <div className='container'>
+        <div className='container py-16'>
             <PropertyForm adminId={session.id} />
         </div>
     )

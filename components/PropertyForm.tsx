@@ -87,68 +87,6 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
 
     const { startUpload } = useUploadThing('imageUploader')
 
-
-    // const onSubmit = async (values: z.infer<typeof formSchema>) => {
-
-    //     console.log(values);
-
-
-    //     setProgress(0)
-    //     const interval = setInterval(() => {
-    //         setProgress(prev => {
-    //             if (prev >= 100) {
-    //                 clearInterval(interval)
-    //                 return 100
-    //             }
-    //             return prev + 10
-    //         })
-    //     }, 500)
-
-
-    //     let uploadedImageUrl = values.images;
-
-    //     if (files.length > 0) {
-
-    //         const uploadedImages = await startUpload(files);
-
-    //         if (!uploadedImages) {
-    //             return;
-    //         }
-    //         uploadedImageUrl = uploadedImages[0].url;
-
-    //     }
-
-    //     try {
-    //         const result = await createProperty(values)
-    //         clearInterval(interval)
-    //         setProgress(100)
-
-    //         if (result.success) {
-    //             toast({
-    //                 title: "Property created successfully.",
-    //                 description: "You will be redirected now",
-    //             })
-    //             // setTimeout(() => router.push('/properties'), 2000)
-    //         } else {
-    //             toast({
-    //                 variant: "destructive",
-    //                 title: "Uh oh! Something went wrong.",
-    //                 description: "There was a problem with your request.",
-    //             })
-    //             console.error(result.error)
-    //         }
-    //     } catch (error) {
-    //         clearInterval(interval)
-    //         setProgress(0)
-    //         console.error(error)
-    //         toast({
-    //             variant: "destructive",
-    //             title: "Uh oh! Something went wrong.",
-    //             description: "There was a problem with your request.",
-    //         })
-    //     }
-    // }
-
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setProgress(0)
         const interval = setInterval(() => {
