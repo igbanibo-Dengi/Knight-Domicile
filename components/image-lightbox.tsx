@@ -24,17 +24,16 @@ export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLi
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-7xl w-full h-full flex items-center justify-center">
+      <DialogContent className="max-w-7xl w-full h-full flex items-center justify-center bg-transparent border-none">
         <div className="relative w-full h-full">
-          {/* <Button
-            variant="ghost"
+          <Button
             size="icon"
             className="absolute top-2 right-2 z-50"
             onClick={onClose}
           >
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
-          </Button> */}
+          </Button>
           <div className="absolute inset-0 flex items-center justify-center">
             <Image
               src={images[currentIndex].src}

@@ -27,33 +27,29 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+
 import { useToast } from '@/hooks/use-toast'
 import { FileUploader } from './FileUploader'
 import { Progress } from "@/components/ui/progress"
-import { Loader2, MapPin } from "lucide-react"
+import { CheckIcon, Loader2, MapPin, SortAsc } from "lucide-react"
 import { useUploadThing } from '@/lib/uploadthing'
+import { cn } from '@/lib/utils'
+import { formSchema, states } from '@/lib/constants'
 
-const formSchema = z.object({
-    images: z.array(z.string()).min(5, {
-        message: "At least 5 images is required.",
-    }),
-    price: z.coerce.number().positive({ message: "Price must be a positive number." }).int().min(1, { message: "Price must be greater than 0." }),
-    status: z.string({ message: "Status is required" }),
-    state: z.string().min(2, { message: "State must be at least 2 characters." }),
-    city: z.string().min(2, { message: "City must be at least 2 characters." }),
-    streetAddress: z.string().min(5, { message: "Address must be at least 5 characters." }),
-    lat: z.string().optional(),
-    lon: z.string().optional(),
-    plots: z.coerce.number().optional(),
-    type: z.string({ message: "Type is required" }).optional(),
-    size: z.coerce.number().positive({ message: "Size must be a positive number." }).optional(),
-    description: z.string().min(10, { message: "Description must be at least 10 characters." }),
-    isLand: z.boolean(),
-    beds: z.coerce.number().int().min(0, { message: "Number of beds must be 0 or greater." }).optional(),
-    baths: z.coerce.number().int().min(0, { message: "Number of baths must be 0 or greater." }).optional(),
-    rooms: z.coerce.number().int().min(0, { message: "Number of rooms must be 0 or greater." }).optional(),
-    adminId: z.string().uuid({ message: "Invalid admin ID." })
-})
+
 
 export default function PropertyForm({ adminId }: { adminId: string }) {
     const router = useRouter()
@@ -66,16 +62,16 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             images: [],
-            price: 0,
+            price: undefined,
             status: "sale",
             state: "",
             city: "",
             streetAddress: "",
-            lat: "",
-            lon: "",
+            lat: "0",
+            lon: "0",
             plots: 1,
             type: "residential",
-            size: 0,
+            size: undefined,
             description: "",
             isLand: false,
             beds: 0,
@@ -86,6 +82,8 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
     })
 
     const { startUpload } = useUploadThing('imageUploader')
+
+
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setProgress(0)
@@ -98,6 +96,9 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
                 return prev + 10
             })
         }, 500)
+
+        console.log(values);
+
 
         try {
             let uploadedImageUrls = values.images;
@@ -125,13 +126,15 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
                     title: "Property created successfully.",
                     description: "You will be redirected shortly.",
                 })
-                setTimeout(() => router.push('/properties'), 2000)
+                setTimeout(() => router.push(`/properties/${result.data.id}`), 2000)
             } else {
                 toast({
                     variant: "destructive",
                     title: "Uh oh! Something went wrong.",
                     description: "There was a problem with your request.",
                 })
+                clearInterval(interval)
+                setProgress(0)
                 console.error(result.error)
             }
         } catch (error) {
@@ -218,11 +221,61 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
                                     control={form.control}
                                     name="state"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="flex flex-col gap-[11px]">
                                             <FormLabel>State</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Enter state" {...field} />
-                                            </FormControl>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            className={cn(
+                                                                " justify-between",
+                                                                !field.value && "text-muted-foreground"
+                                                            )}
+                                                        >
+                                                            {field.value
+                                                                ? states.find(
+                                                                    (state) => state.value === field.value
+                                                                )?.label
+                                                                : "Select State"}
+                                                            <SortAsc className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-[200px] p-0">
+                                                    <Command>
+                                                        <CommandInput
+                                                            placeholder="Search state..."
+                                                            className="h-9"
+                                                        />
+                                                        <CommandList>
+                                                            <CommandEmpty>No framework found.</CommandEmpty>
+                                                            <CommandGroup>
+                                                                {states.map((state) => (
+                                                                    <CommandItem
+                                                                        value={state.label}
+                                                                        key={state.value}
+                                                                        onSelect={() => {
+                                                                            form.setValue("state", state.value)
+                                                                        }}
+                                                                    >
+                                                                        {state.label}
+                                                                        <CheckIcon
+                                                                            className={cn(
+                                                                                "ml-auto h-4 w-4",
+                                                                                state.value === field.value
+                                                                                    ? "opacity-100"
+                                                                                    : "opacity-0"
+                                                                            )}
+                                                                        />
+                                                                    </CommandItem>
+                                                                ))}
+                                                            </CommandGroup>
+                                                        </CommandList>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -262,7 +315,7 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
                                         <FormItem>
                                             <FormLabel>Latitude</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Enter latitude" {...field} />
+                                                <Input placeholder="Enter latitude" {...field} required />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -275,7 +328,7 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
                                         <FormItem>
                                             <FormLabel>Longitude</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Enter longitude" {...field} />
+                                                <Input placeholder="Enter longitude" {...field} required />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

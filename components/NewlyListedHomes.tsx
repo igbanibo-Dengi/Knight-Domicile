@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Home, AlertCircle } from "lucide-react"
 import { Suspense } from "react"
 import PropertyCard from "./PropertyCard "
+import Link from "next/link"
 
 const PropertyCardSkeleton = () => (
     <div className="rounded-lg overflow-hidden shadow-md">
@@ -36,20 +37,27 @@ const NewlyListedHomesContent = async () => {
         }
 
         return (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {listings.map((listing) => (
-                    <PropertyCard
-                        key={listing.id}
-                        id={listing.id}
-                        image={listing.images[0]}
-                        price={listing.price}
-                        beds={listing.beds}
-                        baths={listing.baths}
-                        size={listing.size}
-                        address={listing.streetAddress}
-                        label={listing.status}
-                    />
-                ))}
+            <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {listings.map((listing) => (
+                        <PropertyCard
+                            key={listing.id}
+                            id={listing.id}
+                            image={listing.images[0]}
+                            price={listing.price}
+                            beds={listing.beds}
+                            baths={listing.baths}
+                            size={listing.size}
+                            address={listing.streetAddress}
+                            label={listing.status}
+                            isLand={listing.isLand}
+                            state={listing.state}
+                        />
+                    ))}
+                </div>
+                <div className="mt-8 w-fit mx-auto">
+                    <Link href={"/properties"} className="my-20 text-center text-primary mx-auto w-fit">View more properties</Link>
+                </div>
             </div>
         )
     } catch (error) {

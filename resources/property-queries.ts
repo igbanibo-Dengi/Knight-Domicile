@@ -1,49 +1,72 @@
-import "server-only"; // Strictly ensures server-side execution
-
 import db from "@/drizzle";
 import { properties } from "@/drizzle/schema";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, gte, lte, or, sql, and } from "drizzle-orm";
 
-// Define TypeScript type for a property (optional but recommended)
-export type PropertyProp = {
-    id: string;
-    images: string[];
-    price: string;
-    state: string;
-    status: 'rent' | 'sale';
-    city: string;
-    streetAddress: string;
-    lat: string | null;
-    lon: string | null;
-    plots: number | null;
-    type: "residential" | "commercial" | "agricultural" | "mixed-use"
-    size: string | null;
-    description: string;
-    isLand: boolean | null;
-    beds: number | null;
-    baths: number | null;
-    rooms: number | null;
-    createdAt: Date;
-    updatedAt: Date;
-    adminId: string;
+export type PropertyProp = typeof properties.$inferSelect;
+
+type SearchParams = {
+    search?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    type?: string;
+    state?: string;
+    [key: string]: string | string[] | undefined;
 };
 
-// Async function to fetch all properties from the database
-export const findAllProperties = async (): Promise<PropertyProp[]> => {
+export const findAllProperties = async (searchParams: SearchParams = {}): Promise<PropertyProp[]> => {
     try {
-        // Fetch properties from the database, ordered by creation date (desc)
-        const allProperties = await db
-            .select()
-            .from(properties)
-            .orderBy(desc(properties.createdAt));
+        const { search, minPrice, maxPrice, type, state } = searchParams;
 
-        return allProperties;
+        let query = db.select().from(properties);
+
+        const conditions = [];
+
+        // Price range condition
+        const priceConditions = [];
+        if (minPrice) {
+            priceConditions.push(gte(properties.price, minPrice));
+        }
+        if (maxPrice) {
+            priceConditions.push(lte(properties.price, maxPrice));
+        }
+        if (priceConditions.length > 0) {
+            conditions.push(and(...priceConditions));
+        }
+
+        // Search condition
+        if (search) {
+            conditions.push(
+                or(
+                    sql`${properties.streetAddress} ILIKE ${`%${search}%`}`,
+                    sql`${properties.city} ILIKE ${`%${search}%`}`,
+                    sql`${properties.state} ILIKE ${`%${search}%`}`
+                )
+            );
+        }
+
+        if (type) {
+            conditions.push(eq(properties.type, type as "residential" | "commercial" | "agricultural" | "mixed-use"));
+        }
+
+        // State condition
+        if (state) {
+            conditions.push(eq(properties.state, state));
+        }
+
+        // Apply all conditions to the query
+        if (conditions.length > 0) {
+            query = query.where(and(...conditions));
+        }
+
+        const allProperties = await query.orderBy(desc(properties.createdAt));
+
+        return allProperties || []; // Ensure we always return an array
     } catch (error) {
-        // Log and handle the error gracefully
         console.error("Error fetching properties:", error);
-        throw new Error("Failed to fetch properties");
+        return []; // Return an empty array in case of error
     }
 };
+
 
 // Async function to fetch a property by its ID
 export const findPropertyById = async ({ id }: { id: string }) => {

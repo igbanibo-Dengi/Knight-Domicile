@@ -126,14 +126,18 @@ export default function PropertyListing({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 items-center w-full mb-6 mt-10">
                 <div className='w-full col-span-2'>
-                    <div className='flex items-center justify-between'>
-                        <h1 className="text-3xl font-bold mb-2">{city}, {state}</h1>
-                        <h2 className="text-3xl font-bold mb-4">{formatAmount(price)}</h2>
+                    <div className='flex flex-col-reverse xl:flex-row xl:items-center justify-between'>
+                        <h1 className="text-lg md:text-3xl font-bold mb-2">{city}, {state}</h1>
+                        <h2 className="text-2xl text-primary md:text-3xl font-bold mb-4">{formatAmount(price)}</h2>
                     </div>
                     <p className="text-xl mb-4">{streetAddress}</p>
                     <div className="flex items-center space-x-4 mb-4">
-                        {beds && <span className="flex items-center"><Bed className="mr-1 h-5 w-5" /> {beds} Beds</span>}
-                        {baths && <span className="flex items-center"><Bath className="mr-1 h-5 w-5" /> {baths} Bath</span>}
+                        {!isLand && (
+                            <div className='flex items-center gap-x-4'>
+                                {beds && <span className="flex items-center"><Bed className="mr-1 h-5 w-5" /> {beds} Beds</span>}
+                                {baths && <span className="flex items-center"><Bath className="mr-1 h-5 w-5" /> {baths} Bath</span>}
+                            </div>
+                        )}
                         <span className="flex items-center"><Square className="mr-1 h-5 w-5" /> {size} sq ft</span>
                     </div>
                 </div>
