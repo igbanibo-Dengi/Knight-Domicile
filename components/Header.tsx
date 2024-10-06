@@ -1,3 +1,5 @@
+'use client'
+
 import Link from "next/link";
 import React from "react";
 import {
@@ -8,12 +10,11 @@ import {
 } from "@/components/ui/sheet";
 import { AlignJustify, CircleUserRound } from "lucide-react";
 import { NavlLinks } from "./NavlLinks";
-import { auth } from "@/auth";
-import { Button } from "./ui/button";
 import SignOutButton from "./SignOutButton";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
+import { User } from "next-auth";
 
-export const Header = async () => {
+export const Header = ({ user }: { user: User | undefined }) => {
   const links = [
     { href: "/", label: "Explore" },
     { href: "/saved", label: "Saved" },
@@ -23,12 +24,12 @@ export const Header = async () => {
   ];
 
 
-  const session = await auth();
 
-  const user = session?.user;
+
+  const pathname = usePathname()
 
   return (
-    <nav className="h-14 md:py-8 fixed z-20 w-full bg-background">
+    <nav className={`h-14 md:py-8 fixed z-20 w-full ${pathname.startsWith("/properties") ? "bg-muted" : "bg-background"}`}>
       <div className=" sm:container max-w-[1800px] flex justify-between items-center h-full px-2">
         <h3 className="text-3xl font-bold tracking-tight">
           <Link href="/">Knight</Link>

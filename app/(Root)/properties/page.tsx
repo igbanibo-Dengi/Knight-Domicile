@@ -1,4 +1,5 @@
-import { findAllProperties } from '@/resources/property-queries'
+// Revalidate every 60 seconds
+import { findAllProperties, findLatestProperties } from '@/resources/property-queries'
 import { Suspense } from 'react'
 import { Skeleton } from "@/components/ui/skeleton"
 import PropertyGrid from '@/components/PropertyGrid'
@@ -12,7 +13,6 @@ export default function PropertiesPage({
 }) {
     return (
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-4xl font-bold mb-8">Properties</h1>
             <SearchFilters />
             <Suspense fallback={<PropertyGridSkeleton />}>
                 <PropertyList searchParams={searchParams} />

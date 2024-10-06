@@ -47,6 +47,7 @@
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^7.0.2",
     "valibot": "^0.37.0",
+    "vaul": "^1.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

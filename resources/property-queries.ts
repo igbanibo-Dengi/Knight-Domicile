@@ -1,3 +1,7 @@
+import "server-only"
+
+export const revalidate = 0
+
 import db from "@/drizzle";
 import { properties } from "@/drizzle/schema";
 import { desc, eq, gte, lte, or, sql, and } from "drizzle-orm";
@@ -22,15 +26,11 @@ export const findAllProperties = async (searchParams: SearchParams = {}): Promis
         const conditions = [];
 
         // Price range condition
-        const priceConditions = [];
         if (minPrice) {
-            priceConditions.push(gte(properties.price, minPrice));
+            conditions.push(gte(properties.price, minPrice));
         }
         if (maxPrice) {
-            priceConditions.push(lte(properties.price, maxPrice));
-        }
-        if (priceConditions.length > 0) {
-            conditions.push(and(...priceConditions));
+            conditions.push(lte(properties.price, maxPrice));
         }
 
         // Search condition
@@ -44,6 +44,7 @@ export const findAllProperties = async (searchParams: SearchParams = {}): Promis
             );
         }
 
+        // Type condition
         if (type) {
             conditions.push(eq(properties.type, type as "residential" | "commercial" | "agricultural" | "mixed-use"));
         }
@@ -60,10 +61,10 @@ export const findAllProperties = async (searchParams: SearchParams = {}): Promis
 
         const allProperties = await query.orderBy(desc(properties.createdAt));
 
-        return allProperties || []; // Ensure we always return an array
+        return allProperties;
     } catch (error) {
         console.error("Error fetching properties:", error);
-        return []; // Return an empty array in case of error
+        throw new Error("Failed to fetch properties");
     }
 };
 
@@ -93,7 +94,10 @@ export const findLatestProperties = async (): Promise<PropertyProp[]> => {
             .orderBy(desc(properties.createdAt))
             .limit(8);
 
+        console.log("latest properties", latestProperties.length);
         return latestProperties;
+
+
     } catch (error) {
         console.error("Error fetching latest properties:", error);
         throw new Error("Failed to fetch latest properties");

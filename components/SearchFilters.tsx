@@ -14,6 +14,18 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Filter, SlidersHorizontalIcon } from 'lucide-react'
+
 
 export default function SearchFilters() {
     const router = useRouter()
@@ -22,7 +34,7 @@ export default function SearchFilters() {
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '')
     const [priceRange, setPriceRange] = useState([
         Number(searchParams.get('minPrice')) || 0,
-        Number(searchParams.get('maxPrice')) || 10000000
+        Number(searchParams.get('maxPrice')) || 50000000
     ])
     const [selectedState, setSelectedState] = useState(searchParams.get('state') || 'all')
 
@@ -57,25 +69,95 @@ export default function SearchFilters() {
     }
 
     return (
-        <div className="bg-muted p-6 rounded-lg mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                    <Label htmlFor="search">Search</Label>
+        <div className="rounded-lg mb-8">
+            <div className=" flex items-center lg:grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+
+                <Drawer>
+                    <DrawerTrigger className='lg:hidden' asChild>
+                        <Button variant={"outline"} size={"icon"} className='p-2'>
+                            <SlidersHorizontalIcon className='size-10' />
+                        </Button>
+                    </DrawerTrigger>
+                    <DrawerContent className=''>
+                        <div className="space-y-2 p-8">
+                            <Label>Price Range</Label>
+                            <Slider.Root
+                                className="relative flex items-center select-none touch-none w-full h-5"
+                                value={priceRange}
+                                onValueChange={handlePriceChange}
+                                min={0}
+                                max={50000000}
+                                step={10000}
+                                minStepsBetweenThumbs={1}
+                            >
+                                <Slider.Track className="bg-slate-200 relative grow rounded-full h-[3px]">
+                                    <Slider.Range className="absolute bg-red-400 rounded-full h-full" />
+                                </Slider.Track>
+                                <Slider.Thumb
+                                    className="block w-5 h-5bg-primary shadow-md rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                    aria-label="Min price"
+                                />
+                                <Slider.Thumb
+                                    className="block w-5 h-5bg-primary shadow-md rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                    aria-label="Max price"
+                                />
+                            </Slider.Root>
+                            <div className="flex justify-between mt-2 text-sm">
+                                <span>Min: ₦{priceRange[0].toLocaleString()}</span>
+                                <span>Max: ₦{priceRange[1].toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <div className='px-8'>
+                            <Input
+                                id="search"
+                                placeholder="Search by location"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className='w-full'
+                            />
+                        </div>
+                        <div className="space-y-2 mt-8 px-8">
+                            <Select value={selectedState} onValueChange={setSelectedState}>
+                                <SelectTrigger id="state">
+                                    <SelectValue placeholder="Select a state" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All States</SelectItem>
+                                    {states.map((state) => (
+                                        <SelectItem key={state.value} value={state.value}>
+                                            {state.label}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className='flex items-center justify-between mt-4 p-8'>
+                            <DrawerClose>
+                                <Button className="md:w-full" onClick={handleSearch}>Search</Button>
+                            </DrawerClose>
+
+                            <DrawerClose>
+                                <Button variant="outline">Cancel</Button>
+                            </DrawerClose>
+                        </div>
+                    </DrawerContent>
+                </Drawer>
+                <div className="space-y-2 w-full">
                     <Input
                         id="search"
-                        placeholder="Search by location or property name"
+                        placeholder="Search by location"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        className='w-full'
                     />
                 </div>
-                <div className="space-y-2">
-                    <Label htmlFor="price-range">Price Range</Label>
+                <div className="space-y-2 hidden lg:block">
                     <Slider.Root
                         className="relative flex items-center select-none touch-none w-full h-5"
                         value={priceRange}
                         onValueChange={handlePriceChange}
                         min={0}
-                        max={10000000}
+                        max={50000000}
                         step={10000}
                         minStepsBetweenThumbs={1}
                     >
@@ -96,8 +178,7 @@ export default function SearchFilters() {
                         <span>Max: ₦{priceRange[1].toLocaleString()}</span>
                     </div>
                 </div>
-                <div className="space-y-2">
-                    <Label htmlFor="state">State</Label>
+                <div className="space-y-2 hidden lg:block">
                     <Select value={selectedState} onValueChange={setSelectedState}>
                         <SelectTrigger id="state">
                             <SelectValue placeholder="Select a state" />
@@ -112,9 +193,7 @@ export default function SearchFilters() {
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="md:col-span-2 lg:col-span-3">
-                    <Button className="w-full" onClick={handleSearch}>Search</Button>
-                </div>
+                <Button className="md:w-full" onClick={handleSearch}>Search</Button>
             </div>
         </div>
     )

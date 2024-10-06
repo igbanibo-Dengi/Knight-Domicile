@@ -1,3 +1,6 @@
+export const revalidate = 0
+
+
 import { findLatestProperties } from "@/resources/property-queries"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -24,6 +27,9 @@ const PropertyCardSkeleton = () => (
 const NewlyListedHomesContent = async () => {
     try {
         const listings = await findLatestProperties()
+
+        console.log(listings.length);
+
 
         if (!listings.length) {
             return (
