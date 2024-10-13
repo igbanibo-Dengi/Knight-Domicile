@@ -103,7 +103,7 @@ export const SignedOut = () => {
         <div className="mt-10 flex w-full flex-col-reverse gap-10 md:mt-0 md:flex-row">
             <div className="flex flex-col gap-4 md:flex-row md:items-center">
                 <Link
-                    href={"/explore"}
+                    href={"/properties"}
                     className="flex items-center gap-2 border-b pb-0 md:border-b-0 md:pb-0 md:hover:underline"
                 >
                     Explore
