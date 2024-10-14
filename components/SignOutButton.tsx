@@ -8,7 +8,7 @@ import { LogOut } from "lucide-react";
 const SignOutButton = () => {
   const onClickHandler = async () => {
     await signoutAction();
-    window.location.href = "/";
+    // window.location.href = "/";
   };
 
   return (
