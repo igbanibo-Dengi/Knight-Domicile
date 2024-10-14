@@ -1,34 +1,43 @@
-import { useState } from 'react'
-import Image from 'next/image'
-import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { useState } from "react";
+import Image from "next/image";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface ImageLightboxProps {
-  images: { src: string; alt: string }[]
-  initialIndex: number
-  isOpen: boolean
-  onClose: () => void
+  images: { src: string; alt: string }[];
+  initialIndex: number;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLightboxProps) {
-  const [currentIndex, setCurrentIndex] = useState(initialIndex)
+export function ImageLightbox({
+  images,
+  initialIndex,
+  isOpen,
+  onClose,
+}: ImageLightboxProps) {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : images.length - 1))
-  }
+    setCurrentIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : images.length - 1,
+    );
+  };
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex < images.length - 1 ? prevIndex + 1 : 0))
-  }
+    setCurrentIndex((prevIndex) =>
+      prevIndex < images.length - 1 ? prevIndex + 1 : 0,
+    );
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-7xl w-full h-full flex items-center justify-center bg-transparent border-none">
-        <div className="relative w-full h-full">
+      <DialogContent className="flex h-full w-full max-w-7xl items-center justify-center border-none bg-transparent">
+        <div className="relative h-full w-full">
           <Button
             size="icon"
-            className="absolute top-2 right-2 z-50"
+            className="absolute right-2 top-2 z-50"
             onClick={onClose}
           >
             <X className="h-4 w-4" />
@@ -39,13 +48,13 @@ export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLi
               src={images[currentIndex].src}
               alt={images[currentIndex].alt}
               fill
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: "contain" }}
             />
           </div>
           <Button
             variant="outline"
             size="icon"
-            className="absolute left-2 top-1/2 transform -translate-y-1/2"
+            className="absolute left-2 top-1/2 -translate-y-1/2 transform"
             onClick={goToPrevious}
           >
             <ChevronLeft className="h-4 w-4" />
@@ -54,17 +63,17 @@ export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLi
           <Button
             variant="outline"
             size="icon"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+            className="absolute right-2 top-1/2 -translate-y-1/2 transform"
             onClick={goToNext}
           >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Next image</span>
           </Button>
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 transform rounded bg-black bg-opacity-50 px-2 py-1 text-white">
             {currentIndex + 1} / {images.length}
           </div>
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

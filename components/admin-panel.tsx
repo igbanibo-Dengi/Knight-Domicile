@@ -44,26 +44,23 @@ type User = {
   role: string;
 };
 
-
-
 export function AdminPanelComponent({ users }: any) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [message, setMessage] = useState('')
-  const [loading, setIsloading] = useState(false)
+  const [message, setMessage] = useState("");
+  const [loading, setIsloading] = useState(false);
 
   // console.log(users.map((user: User) => user.id));
-
-
-
 
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: "id",
       header: "ID",
-      cell: ({ row }) => <div className="font-medium">{row.getValue("id")}</div>,
+      cell: ({ row }) => (
+        <div className="font-medium">{row.getValue("id")}</div>
+      ),
     },
     {
       accessorKey: "name",
@@ -111,7 +108,6 @@ export function AdminPanelComponent({ users }: any) {
       ),
     },
   ];
-
 
   const table = useReactTable({
     data: users,
@@ -182,9 +178,9 @@ export function AdminPanelComponent({ users }: any) {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                       </TableHead>
                     );
                   })}

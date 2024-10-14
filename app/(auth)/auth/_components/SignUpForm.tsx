@@ -33,7 +33,7 @@ export const SignupForm = () => {
     const res = await signUpAction(values);
 
     if (res.success) {
-      router.push("/auth/sign-up/success")
+      router.push("/auth/sign-up/success");
     } else {
       switch (res.statusCode) {
         case 400:
@@ -72,7 +72,7 @@ export const SignupForm = () => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(submit)}
-        className="w-full space-y-4 px-10 md:max-w-[600px] mx-auto md:px-20"
+        className="mx-auto w-full space-y-4 px-10 md:max-w-[600px] md:px-20"
         autoComplete="false"
       >
         <FormField

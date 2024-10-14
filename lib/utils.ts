@@ -5,13 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-
 export function convertStringToNumber(numStr: string): number {
   // Remove any non-numeric characters (e.g., commas, whitespace)
-  const cleanedNumStr = numStr.replace(/[^\d.-]/g, '');
+  const cleanedNumStr = numStr.replace(/[^\d.-]/g, "");
 
   // Check if the number is an integer or float
-  if (cleanedNumStr.includes('.')) {
+  if (cleanedNumStr.includes(".")) {
     return parseFloat(cleanedNumStr);
   } else {
     return parseInt(cleanedNumStr, 10);
@@ -26,16 +25,15 @@ export const formatAmount = (amountString: string): string => {
   if (isNaN(amount)) return "₦0.00";
 
   // Format the amount using Intl.NumberFormat
-  const formattedAmount = new Intl.NumberFormat('en-NG', {
-    style: 'currency',
-    currency: 'NGN',
+  const formattedAmount = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
 
   return formattedAmount; // Return the formatted currency string
 };
-
 
 export function convertNumberToString(numValue: number): string {
   // Use the toString() method to convert the number to a string
@@ -64,11 +62,9 @@ export function divideNumbers(a: string, b: string): number {
   const aValue = convertStringToNumber(a);
   const bValue = convertStringToNumber(b);
   if (bValue === 0) {
-    throw new Error('Cannot divide by zero!');
+    throw new Error("Cannot divide by zero!");
   }
   return aValue / bValue;
 }
 
-
-
-export const convertFileToUrl = (file: File) => URL.createObjectURL(file)
+export const convertFileToUrl = (file: File) => URL.createObjectURL(file);

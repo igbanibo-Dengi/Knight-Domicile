@@ -8,15 +8,13 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   const session = await auth();
-
 
   const user = session?.user;
   return (
     <main className="flex min-h-screen flex-col">
       <Header user={user} />
-      <div className="flex-1 mt-16">{children}</div>
+      <div className="mt-16 flex-1">{children}</div>
       <Footer />
     </main>
   );

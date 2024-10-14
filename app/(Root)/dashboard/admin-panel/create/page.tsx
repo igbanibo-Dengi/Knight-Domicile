@@ -1,21 +1,18 @@
-
-import PropertyForm from '@/components/PropertyForm'
-import { UploadButton } from '@/lib/uploadthing'
-import { findUserByAuth } from '@/resources/user.queries'
-import React from 'react'
+import PropertyForm from "@/components/PropertyForm";
+import { UploadButton } from "@/lib/uploadthing";
+import { findUserByAuth } from "@/resources/user.queries";
+import React from "react";
 
 const page = async () => {
+  const session = await findUserByAuth();
 
-    const session = await findUserByAuth()
+  console.log(session.id);
 
-    console.log(session.id);
+  return (
+    <div className="container py-16">
+      <PropertyForm adminId={session.id} />
+    </div>
+  );
+};
 
-
-    return (
-        <div className='container py-16'>
-            <PropertyForm adminId={session.id} />
-        </div>
-    )
-}
-
-export default page
+export default page;

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import React from "react";
@@ -23,14 +23,13 @@ export const Header = ({ user }: { user: User | undefined }) => {
     { href: "/help", label: "Help & Support" },
   ];
 
-
-
-
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
-    <nav className={`h-14 md:py-8 fixed z-20 w-full ${pathname.startsWith("/properties") ? "bg-muted" : "bg-background"}`}>
-      <div className=" sm:container max-w-[1800px] flex justify-between items-center h-full px-2">
+    <nav
+      className={`fixed z-20 h-14 w-full md:py-8 ${pathname.startsWith("/properties") ? "bg-muted" : "bg-background"}`}
+    >
+      <div className="flex h-full max-w-[1800px] items-center justify-between px-2 sm:container">
         <h3 className="text-3xl font-bold tracking-tight">
           <Link href="/">Knight</Link>
         </h3>
@@ -41,23 +40,27 @@ export const Header = ({ user }: { user: User | undefined }) => {
               <AlignJustify className="mr-2" />
             </SheetTrigger>
             <SheetContent>
-              <div className="flex flex-col gap-4 mt-8 h-[90%]">
+              <div className="mt-8 flex h-[90%] flex-col gap-4">
                 {links.map((link, index) => (
                   <SheetClose asChild key={index}>
-                    <Link href={link.href} className="text-lg w-full text-left">
+                    <Link href={link.href} className="w-full text-left text-lg">
                       {link.label}
                     </Link>
                   </SheetClose>
                 ))}
 
                 <div className="mt-auto w-full">
-                  <div className="flex items-center gap-4 p-4 mb-2 bg-muted rounded-md">
-                    <span className="bg-primary text-white flex items-center justify-center size-12 rounded-full">
+                  <div className="mb-2 flex items-center gap-4 rounded-md bg-muted p-4">
+                    <span className="flex size-12 items-center justify-center rounded-full bg-primary text-white">
                       {user?.name?.[0] ?? <CircleUserRound />}
                     </span>
                     <div className="">
-                      <p className="text-lg capitalize font-semibold">{user?.name}</p>
-                      <p className="text-muted-foreground text-sm">{user?.email}</p>
+                      <p className="text-lg font-semibold capitalize">
+                        {user?.name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {user?.email}
+                      </p>
                     </div>
                   </div>
                   <SignOutButton />

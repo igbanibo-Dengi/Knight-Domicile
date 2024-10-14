@@ -35,11 +35,11 @@ export const SignInForm = () => {
 
     if (res.success) {
       // reset();
-      window.location.href = "/"
+      window.location.href = "/";
     } else {
       switch (res.statusCode) {
         case 401:
-          setError("password", { message: res.error })
+          setError("password", { message: res.error });
           break;
         case 500:
         default:
@@ -53,7 +53,7 @@ export const SignInForm = () => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(submit)}
-        className="w-full space-y-4 px-10 md:max-w-[600px] mx-auto md:px-20"
+        className="mx-auto w-full space-y-4 px-10 md:max-w-[600px] md:px-20"
         autoComplete="false"
       >
         <FormField

@@ -1,16 +1,18 @@
-import React from 'react'
-import Search from './Search'
+import React from "react";
+import Search from "./Search";
 
 const Hero = () => {
-    return (
-        <section className=' w-full h-[90vh] md:h-[70vh] relative'>
-            <div className="text-white gap-8 max-w-[96%] relative mx-auto h-full z-10 bg-[url('/images/hero.webp')] bg-center bg-cover bg-no-repeat w-full flex flex-col items-center justify-center rounded-md px-4">
-                <h2 className='font-bold text-4xl md:text-5xl text-center z-10'>Building Dreams <br /> One Key at a Time</h2>
-                <Search />
-            </div>
-            {/* <div className="absolute h-full w-full top-0 rounded-md bg-black/40" /> */}
-        </section>
-    )
-}
+  return (
+    <section className="relative h-[90vh] w-full md:h-[70vh]">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[96%] flex-col items-center justify-center gap-8 rounded-md bg-[url('/images/hero.webp')] bg-cover bg-center bg-no-repeat px-4 text-white">
+        <h2 className="z-10 text-center text-4xl font-bold md:text-5xl">
+          Building Dreams <br /> One Key at a Time
+        </h2>
+        <Search />
+      </div>
+      {/* <div className="absolute h-full w-full top-0 rounded-md bg-black/40" /> */}
+    </section>
+  );
+};
 
-export default Hero
+export default Hero;
