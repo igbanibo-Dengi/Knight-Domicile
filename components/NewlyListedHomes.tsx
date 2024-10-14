@@ -28,7 +28,7 @@ const NewlyListedHomesContent = async () => {
     try {
         const listings = await findLatestProperties()
 
-        console.log(listings.length);
+        // console.log(listings.length);
 
 
         if (!listings.length) {

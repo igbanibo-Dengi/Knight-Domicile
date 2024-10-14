@@ -6,9 +6,11 @@ import { auth } from "@/auth";
 import db from "@/drizzle";
 import { USER_ROLES } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
-import { properties } from "@/drizzle/schema";
+import { properties, savedProperties } from "@/drizzle/schema";
 import { propertySchema } from "@/validators/property-validator";
 import { convertNumberToString } from "@/lib/utils";
+import { User } from "next-auth";
+import { and, eq } from "drizzle-orm";
 
 
 
@@ -21,6 +23,14 @@ type Res =
     | { success: false; error: v.FlatErrors<undefined>; statusCode: 400 }
     | { success: false; error: string; statusCode: 401 | 403 | 404 | 500 };
 
+
+type Response =
+    | {
+        success: true;
+        data: typeof savedProperties.$inferInsert;
+    }
+    | { success: false; error: v.FlatErrors<undefined>; statusCode: 400 }
+    | { success: false; error: string; statusCode: 401 | 403 | 404 | 500 };
 
 
 export async function createProperty(values: unknown): Promise<Res> {
@@ -80,6 +90,68 @@ export async function createProperty(values: unknown): Promise<Res> {
         return { success: true, data: createdProperty };
     } catch (error) {
         console.error(error);
+        return { success: false, error: "Internal Server Error", statusCode: 500 };
+    }
+}
+
+
+export async function saveProperty(propertyId: string): Promise<{ success: boolean; error?: string; statusCode?: number; data?: any }> {
+    const session = await auth();
+    if (!session?.user) {
+        return { success: false, error: "Unauthorized", statusCode: 401 };
+    }
+    const userId = session.user.id;
+
+    if (!userId) {
+        return { success: false, error: "no user", statusCode: 400 };
+    }
+
+    try {
+        const [savedProperty] = await db
+            .insert(savedProperties)
+            .values({
+                userId: userId,
+                propertyId: propertyId
+            })
+            .returning();
+
+        console.log("Property saved successfully:", savedProperty);
+
+        return { success: true, data: savedProperty };
+    } catch (error) {
+        console.error("Error saving property:", error);
+        return { success: false, error: "Internal Server Error", statusCode: 500 };
+    }
+}
+
+
+export async function unSaveProperty(propertyId: string): Promise<{ success: boolean; error?: string; statusCode?: number; data?: any }> {
+    const session = await auth();
+    if (!session?.user) {
+        return { success: false, error: "Unauthorized", statusCode: 401 };
+    }
+    const userId = session.user.id;
+
+    if (!userId) {
+        return { success: false, error: "no user", statusCode: 400 };
+    }
+
+    try {
+        const [unSavedProperty] = await db
+            .delete(savedProperties)
+            .where(
+                and(
+                    eq(savedProperties.userId, userId),
+                    eq(savedProperties.propertyId, propertyId)
+                )
+            )
+            .returning();
+
+        console.log("Property unsaved successfully:", unSavedProperty);
+
+        return { success: true, data: unSavedProperty };
+    } catch (error) {
+        console.error("Error saving property:", error);
         return { success: false, error: "Internal Server Error", statusCode: 500 };
     }
 }
