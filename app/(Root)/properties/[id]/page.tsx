@@ -8,34 +8,13 @@ interface PropertyPageProps {
     params: { id: string };
 }
 
-// interface Property {
-//   id: string;
-//   images: string[];
-//   price: number;
-//   state: string;
-//   status: string;
-//   city: string;
-//   streetAddress: string;
-//   lat: number | null;
-//   lon: number | null;
-//   plots: number | null;
-//   type: string;
-//   size: number;
-//   description: string;
-//   isLand: boolean;
-//   beds?: number | null;
-//   baths?: number | null;
-//   rooms?: number | null;
-// }
 
 export default async function PropertyPage({ params }: PropertyPageProps) {
     const { id } = params;
 
-    // Fetch the session
     const session = await auth();
     const user = session?.user;
 
-    // Fetch the property data by ID
     const properties = await findPropertyById({ id });
 
     // Handle the case where the property is not found
@@ -45,8 +24,6 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
     // Destructure the first property object from the array
     const property = properties[0];
-
-    // Create a client-side action for toggling saved status
 
     return (
         <div className="container mx-auto px-4">

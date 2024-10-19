@@ -1,15 +1,12 @@
-// app/actions/createProperty.ts"
 "use server";
 
 import * as v from "valibot";
 import { auth } from "@/auth";
 import db from "@/drizzle";
 import { USER_ROLES } from "@/lib/constants";
-import { revalidatePath } from "next/cache";
 import { properties, savedProperties } from "@/drizzle/schema";
 import { propertySchema } from "@/validators/property-validator";
 import { convertNumberToString } from "@/lib/utils";
-import { User } from "next-auth";
 import { and, eq } from "drizzle-orm";
 
 type Res =
@@ -196,4 +193,46 @@ export async function isPropertySaved(propertyId: string) {
         );
 
     return savedProperty.length > 0; // Returns true if the property is saved, otherwise false
+}
+
+
+
+export async function deleteAllSavedProperties(): Promise<{
+    success: boolean;
+    error?: string;
+    statusCode?: number;
+    data?: any;
+}> {
+    const session = await auth();
+
+    // Check if the user is authenticated
+    if (!session?.user) {
+        return { success: false, error: "Unauthorized", statusCode: 401 };
+    }
+
+    const userId = session.user.id;
+
+    if (!userId) {
+        return { success: false, error: "No user found", statusCode: 400 };
+    }
+
+    try {
+        // Delete all saved properties for the user
+        const deletedSavedProperties = await db
+            .delete(savedProperties)
+            .where(eq(savedProperties.userId, userId))
+            .returning(); // Returns the deleted rows for confirmation
+
+        if (deletedSavedProperties.length === 0) {
+            return { success: false, error: "No saved properties found", statusCode: 404 };
+        }
+
+        console.log("All saved properties deleted:", deletedSavedProperties);
+
+        return { success: true, data: deletedSavedProperties };
+
+    } catch (error) {
+        console.error("Error deleting saved properties:", error);
+        return { success: false, error: "Internal Server Error", statusCode: 500 };
+    }
 }

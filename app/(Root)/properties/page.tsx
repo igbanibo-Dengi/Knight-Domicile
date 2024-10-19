@@ -1,7 +1,6 @@
 // Revalidate every 60 seconds
 import {
   findAllProperties,
-  findLatestProperties,
 } from "@/resources/property-queries";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";

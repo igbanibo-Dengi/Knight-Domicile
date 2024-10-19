@@ -6,27 +6,27 @@ import { Button } from "./ui/button";
 const cities = [
   {
     name: "Ikeja, Lagos State",
-    url: "/properties?minPrice=0&maxPrice=1000000&state=lagos",
+    url: "/properties?minPrice=0&maxPrice=50000000&state=lagos",
     image: "/images/cities/lagos2.jpg",
   },
   {
     name: "Abuja, FCT",
-    url: "/properties?minPrice=0&maxPrice=1000000&state=fedral+capital+territory",
+    url: "/properties?minPrice=0&maxPrice=50000000&state=fedral+capital+territory",
     image: "/images/cities/abuja.jpg",
   },
   {
     name: "Port Harcourt, Rivers State",
-    url: "/properties?minPrice=0&maxPrice=1000000&state=rivers",
+    url: "/properties?minPrice=0&maxPrice=50000000&state=rivers",
     image: "/images/cities/port-harcourt.png",
   },
   {
     name: "Ibadan, Oyo State",
-    url: "/properties?minPrice=0&maxPrice=1000000&state=oyo",
+    url: "/properties?minPrice=0&maxPrice=50000000&state=oyo",
     image: "/images/cities/ibadan.avif",
   },
   {
     name: "Enugu, Enugu State",
-    url: "/properties?minPrice=0&maxPrice=1000000&state=enugu",
+    url: "/properties?minPrice=0&maxPrice=50000000&state=enugu",
     image: "/images/cities/enugu.jpg",
   },
   // { name: 'Kano, Kano State', url: "/properties?minPrice=0&maxPrice=1000000&state=rivers", image: '/images/cities/kano.jpg' },

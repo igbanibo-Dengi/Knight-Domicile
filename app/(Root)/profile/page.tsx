@@ -1,84 +1,135 @@
-import { auth } from "@/auth";
-import SignOutButton from "@/components/SignOutButton";
-import { Button } from "@/components/ui/button";
-import { type User } from "next-auth";
-import Link from "next/link";
-import React from "react";
-import { UpdateUserForm } from "./_components/update-user-form";
-import { findUserByAuth } from "@/resources/user.queries";
-import { USER_ROLES } from "@/lib/constants";
-import { LockIcon } from "lucide-react";
+import { auth } from "@/auth"
+import SignOutButton from "@/components/SignOutButton"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { type User } from "next-auth"
+import Link from "next/link"
+import React from "react"
+import { UpdateUserForm } from "./_components/update-user-form"
+import { findUserByAuth } from "@/resources/user.queries"
+import { USER_ROLES } from "@/lib/constants"
+import { LockIcon, UserIcon, MailIcon, KeyIcon, ActivityIcon } from "lucide-react"
 
-const page = async () => {
-  const session = await auth();
-  const isAdmin = session?.user?.role === USER_ROLES.ADMIN;
+const ProfilePage = async () => {
+  const session = await auth()
+  const isAdmin = session?.user?.role === USER_ROLES.ADMIN
 
   return (
-    <main className="mt-4">
-      <div className="container">
-        <span className="flex items-center justify-between">
-          <h1 className="tracking-light text-3xl font-bold">Profile</h1>
+    <main className="min-h-screen bg-gray-100 py-12">
+      <div className="container mx-auto px-4">
+        <Card>
+          <CardContent>
+            {!!session?.user ? <SignedIn user={session.user} /> : <SignedOut />}
+          </CardContent>
+        </Card>
+      </div>
+    </main>
+  )
+}
+
+export default ProfilePage
+
+const SignedIn = async ({ user }: { user: User }) => {
+  const dbUser = await findUserByAuth()
+
+  const session = await auth()
+  const isAdmin = session?.user?.role === USER_ROLES.ADMIN
+
+  return (
+    <div className="space-y-8 py-10">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-center space-x-4">
+          <Avatar className="h-20 w-20">
+            <AvatarImage src={user.image || undefined} alt={user.name || "User avatar"} />
+            <AvatarFallback>{user.name?.charAt(0) || "U"}</AvatarFallback>
+          </Avatar>
+          <div>
+            <h2 className="text-2xl font-bold">{dbUser.name || "User"}</h2>
+            <p className="text-muted-foreground">{dbUser.email}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 w-fit">
           {isAdmin && (
-            <Button size={"lg"} asChild>
-              <Link href={"/dashboard"}>
-                <LockIcon className="mr-2" />
+            <Button size="lg" asChild>
+              <Link href="/dashboard">
+                <LockIcon className="mr-2 h-4 w-4" />
                 Admin Dashboard
               </Link>
             </Button>
           )}
-        </span>
-        <div className="my-4 h-1 bg-muted" />
-        {!!session?.user ? <SignedIn user={session.user} /> : <SignedOut />}
+          <UpdateUserForm user={user} />
+        </div>
       </div>
-    </main>
-  );
-};
 
-export default page;
+      <Tabs defaultValue="info" className="w-full">
+        <TabsList>
+          <TabsTrigger value="info">User Information</TabsTrigger>
+          <TabsTrigger value="activity">Recent Activity</TabsTrigger>
+        </TabsList>
+        <TabsContent value="info">
+          <Card>
+            <CardContent className="pt-6">
+              <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="flex flex-col">
+                  <dt className="text-sm font-medium text-muted-foreground">Name</dt>
+                  <dd className="flex items-center mt-1 text-sm">
+                    <UserIcon className="mr-2 h-4 w-4" />
+                    {dbUser.name || "Not set"}
+                  </dd>
+                </div>
+                <div className="flex flex-col">
+                  <dt className="text-sm font-medium text-muted-foreground">Email</dt>
+                  <dd className="flex items-center mt-1 text-sm">
+                    <MailIcon className="mr-2 h-4 w-4" />
+                    {dbUser.email}
+                  </dd>
+                </div>
+                <div className="flex flex-col">
+                  <dt className="text-sm font-medium text-muted-foreground">Role</dt>
+                  <dd className="flex items-center mt-1 text-sm">
+                    <KeyIcon className="mr-2 h-4 w-4" />
+                    <Badge variant="secondary">{dbUser.role}</Badge>
+                  </dd>
+                </div>
+                <div className="flex flex-col">
+                  <dt className="text-sm font-medium text-muted-foreground">User ID</dt>
+                  <dd className="flex items-center mt-1 text-sm">
+                    <ActivityIcon className="mr-2 h-4 w-4" />
+                    {dbUser.id || "Not available"}
+                  </dd>
+                </div>
+              </dl>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="activity">
+          <Card>
+            <CardContent className="pt-6">
+              <p className="text-muted-foreground">No recent activity to display.</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
 
-const SignedIn = async ({ user }: { user: User }) => {
-  // ***IF YOU WANT TO GET THE USER FROM THE DATABASE VIA AUTH***
-  const dbUser = await findUserByAuth();
-
-  return (
-    <>
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">User Information</h2>
-        <UpdateUserForm user={user} />
+      <div className="flex justify-end w-fit">
+        <SignOutButton />
       </div>
-      <table className="mt-4 table-auto divide-y">
-        <thead>
-          <tr className="divide-x">
-            <th className="bg-gray-50 px-6 py-3 text-start">name</th>
-            <th className="bg-gray-50 px-6 py-3 text-start">email</th>
-            <th className="bg-gray-50 px-6 py-3 text-start">role</th>
-            <th className="bg-gray-50 px-6 py-3 text-start">id</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="divide-x">
-            <td className="px-6 py-3">{dbUser.name || null}</td>
-            <td className="px-6 py-3">{dbUser.email}</td>
-            <td className="px-6 py-3">{dbUser.role}</td>
-            <td className="px-6 py-3">{dbUser.id || null}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div className="my-4 h-1 bg-muted" />
-      <SignOutButton />
-    </>
-  );
-};
+    </div>
+  )
+}
 
 const SignedOut = () => {
   return (
-    <>
-      <h2 className="text-2xl font-bold tracking-tight">User not signed in</h2>
-      <div className="my-2 bg-muted" />
-
-      <Button asChild>
+    <div className="text-center">
+      <UserIcon className="mx-auto h-12 w-12 text-muted-foreground" />
+      <h2 className="mt-2 text-2xl font-semibold">User not signed in</h2>
+      <p className="mt-1 text-muted-foreground">Sign in to view and manage your profile</p>
+      <Button asChild className="mt-4">
         <Link href="/auth/sign-in">Sign In</Link>
       </Button>
-    </>
-  );
-};
+    </div>
+  )
+}

@@ -68,7 +68,7 @@ export default function PropertyListing({
 
         try {
             const res = await isPropertySaved(id); // Use userId and propertyId
-            console.log(res);
+            // console.log(res);
             if (res === true) {
                 setIsSaved(res);
             }
@@ -146,7 +146,7 @@ export default function PropertyListing({
                             disabled={isLoading}
                             onClick={handleToggleSave}
                         >
-                            <Heart fill={isSaved ? "#2563EB" : ""} className={`mr-2 h-4 w-4 ${isSaved ? "text-primary" : ""}`} />
+                            <Heart fill={isSaved ? "#2563EB" : "white"} className={`mr-2 h-4 w-4 ${isSaved ? "text-primary" : ""}`} />
                             {isSaved ? "Saved" : "Save"}
                         </Button>
                     </div>

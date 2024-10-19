@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import "server-only";
 
@@ -6,7 +5,8 @@ export const revalidate = 0;
 
 import db from "@/drizzle";
 import { desc, eq, gte, lte, or, sql, and } from "drizzle-orm";
-import { properties } from "@/drizzle/schema";
+import { properties, savedProperties } from "@/drizzle/schema";
+import { auth } from "@/auth";
 
 export type PropertyProp = typeof properties.$inferSelect;
 
@@ -97,5 +97,48 @@ export const findLatestProperties = async (): Promise<PropertyProp[]> => {
   } catch (error) {
     console.error("Error fetching latest properties:", error);
     throw new Error("Failed to fetch latest properties");
+  }
+};
+
+
+export const findSavedProperties = async ({ userId }: { userId: string }): Promise<PropertyProp[]> => {
+
+  try {
+    // Select only the columns from the 'properties' table
+    const saved = await db
+      .select({
+        id: properties.id,
+        type: properties.type,
+        status: properties.status,
+        images: properties.images,
+        price: properties.price,
+        state: properties.state,
+        city: properties.city,
+        streetAddress: properties.streetAddress,
+        description: properties.description,
+        lat: properties.lat,
+        lon: properties.lon,
+        beds: properties.beds,
+        baths: properties.baths,
+        rooms: properties.rooms,
+        plots: properties.plots,
+        size: properties.size,
+        isLand: properties.isLand,
+        createdAt: properties.createdAt,
+        updatedAt: properties.updatedAt,
+        adminId: properties.adminId,
+      })
+      .from(savedProperties) // 'saved_property' table
+      .innerJoin(properties, eq(savedProperties.propertyId, properties.id)) // Join with the 'properties' table
+      .where(eq(savedProperties.userId, userId)) // Filter by userId
+      .orderBy(desc(properties.createdAt)) // Order the results by createdAt
+      .limit(8); // Limit the results to 8
+
+    // console.log(saved);
+
+    return saved;
+  } catch (error) {
+    console.error("Error fetching saved properties:", error);
+    throw new Error("Failed to fetch saved properties");
   }
 };

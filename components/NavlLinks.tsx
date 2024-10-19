@@ -4,12 +4,9 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import {
-  ChartPie,
   CircleUserRound,
   HelpCircle,
-  LayoutDashboard,
   Loader,
-  Rss,
   User2,
   User2Icon,
 } from "lucide-react";
@@ -54,10 +51,10 @@ export const SignedIn = ({ user }: { user: User }) => {
           Explore
         </Link>
         <Link
-          href={"/save"}
+          href={"/saved"}
           className="flex items-center gap-2 border-b pb-0 md:border-b-0 md:pb-0 md:hover:underline"
         >
-          Save
+          Saved
         </Link>
         <Link
           href={"/about"}
@@ -69,11 +66,9 @@ export const SignedIn = ({ user }: { user: User }) => {
       <Popover>
         <PopoverTrigger className="hidden md:block">
           <Button variant={"secondary"} className="text-base capitalize">
-            {/* <span className="bg-muted-foreground text-white flex items-center justify-center size-8 md:size-8 rounded-full"> */}
             <CircleUserRound className="mr-2" strokeWidth={1.5} />
             {user?.name ?? <CircleUserRound />}
           </Button>
-          {/* </span> */}
         </PopoverTrigger>
         <PopoverContent className="mr-10 p-0">
           <div className="flex items-center gap-4 border-b-2 p-4">
@@ -115,12 +110,6 @@ export const SignedOut = () => {
           className="flex items-center gap-2 border-b pb-0 md:border-b-0 md:pb-0 md:hover:underline"
         >
           Explore
-        </Link>
-        <Link
-          href={"/save"}
-          className="flex items-center gap-2 border-b pb-0 md:border-b-0 md:pb-0 md:hover:underline"
-        >
-          Save
         </Link>
         <Link
           href={"/about"}
