@@ -1,3 +1,4 @@
+// import { Counter } from "@/components/Counter";
 import ExploreHomes from "@/components/ExploreHomes";
 import Hero from "@/components/Hero";
 import NewlyListedHomes from "@/components/NewlyListedHomes";
@@ -12,6 +13,7 @@ export default function Home() {
           <NewlyListedHomes />
         </div>
       </div>
+      {/* <Counter /> */}
     </main>
   );
 }
