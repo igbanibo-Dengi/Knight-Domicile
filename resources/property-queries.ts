@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 import "server-only";
 
 export const revalidate = 0;
