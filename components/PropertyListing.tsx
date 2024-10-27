@@ -125,8 +125,8 @@ export default function PropertyListing({
         <div className="container mx-auto p-4">
             <div className="mb-4 flex items-center">
                 <Button variant="ghost" className="mr-auto hidden md:block">
-                    <Link href={"/"} className="flex items-center gap-2">
-                        <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" /> Back
+                    <Link href={"/properties"} className="flex items-center gap-2">
+                        <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" /> Back to search
                     </Link>
                 </Button>
                 <div className="flex w-full items-center justify-between gap-2 md:w-fit">

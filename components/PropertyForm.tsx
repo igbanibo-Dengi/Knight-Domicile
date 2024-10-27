@@ -72,16 +72,16 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
       state: "",
       city: "",
       streetAddress: "",
-      lat: "0",
-      lon: "0",
+      lat: "",
+      lon: "",
       plots: 1,
       type: "residential",
       size: undefined,
       description: "",
       isLand: false,
-      beds: 0,
-      baths: 0,
-      rooms: 0,
+      beds: undefined,
+      baths: undefined,
+      rooms: undefined,
       adminId: adminId,
     },
   });
@@ -252,8 +252,8 @@ export default function PropertyForm({ adminId }: { adminId: string }) {
                             >
                               {field.value
                                 ? states.find(
-                                    (state) => state.value === field.value,
-                                  )?.label
+                                  (state) => state.value === field.value,
+                                )?.label
                                 : "Select State"}
                               <SortAsc className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>

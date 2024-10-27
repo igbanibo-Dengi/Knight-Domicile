@@ -27,8 +27,20 @@ export const formSchema = z.object({
   streetAddress: z
     .string()
     .min(5, { message: "Address must be at least 5 characters." }),
-  lat: z.string().min(1, { message: "required" }),
-  lon: z.string().min(1, { message: "required" }),
+  lat: z.string().refine(
+    (val) => {
+      const num = parseFloat(val);
+      return !isNaN(num) && num >= -90 && num <= 90;
+    },
+    { message: "Latitude must be a number between -90 and 90." }
+  ),
+  lon: z.string().refine(
+    (val) => {
+      const num = parseFloat(val);
+      return !isNaN(num) && num >= -180 && num <= 180;
+    },
+    { message: "Longitude must be a number between -180 and 180." }
+  ),
   plots: z.coerce.number().optional(),
   type: z.string({ message: "Type is required" }).optional(),
   size: z.coerce
