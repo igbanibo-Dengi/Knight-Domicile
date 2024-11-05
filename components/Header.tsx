@@ -32,8 +32,8 @@ export const Header = ({ user }: { user: User | undefined }) => {
       className={`fixed z-20 h-14 w-full md:py-8 ${pathname.startsWith("/properties") ? "bg-muted" : "bg-background"} ${pathname.startsWith("/saved") ? "bg-muted" : "bg-background"}`}
     >
       <div className="flex h-full max-w-[1800px] items-center justify-between px-2 sm:container">
-        <h3 className="text-3xl font-bold tracking-tight">
-          <Link href="/">Knight</Link>
+        <h3 className="text-2xl md:text-3xl font-bold tracking-tight">
+          <Link href="/">Knight Domicile</Link>
         </h3>
 
         <div className="md:hidden">

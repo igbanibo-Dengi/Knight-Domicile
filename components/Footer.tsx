@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Company Info */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-primary">Knight</h2>
+            <h2 className="text-2xl font-bold text-primary">Knight Domicile</h2>
             <p className="text-sm">
               Your trusted partner in finding the perfect property. With years
               of experience and a commitment to excellence, we&apos;re here to
