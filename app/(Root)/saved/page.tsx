@@ -63,7 +63,7 @@ const Page = async () => {
                     <CardHeader>
                         <CardTitle>No Saved Properties</CardTitle>
                         <CardDescription>
-                            You haven't saved any properties yet. Start browsing to find your dream home!
+                            You haven&apos;t saved any properties yet. Start browsing to find your dream home!
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
