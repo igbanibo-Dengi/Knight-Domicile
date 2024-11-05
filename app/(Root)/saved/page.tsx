@@ -80,28 +80,28 @@ const Page = async () => {
 export default Page;
 
 // Add this loading state component
-export function Loading() {
-    return (
-        <div className="container mx-auto px-4 py-8 min-h-screen">
-            <div className="flex flex-col md:flex-row items-center justify-between mb-8">
-                <Skeleton className="h-10 w-48 mb-4 md:mb-0" />
-                <Skeleton className="h-10 w-32" />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                    <Card key={i}>
-                        <CardHeader>
-                            <Skeleton className="h-4 w-2/3 mb-2" />
-                            <Skeleton className="h-4 w-1/2" />
-                        </CardHeader>
-                        <CardContent>
-                            <Skeleton className="h-[200px] w-full mb-4" />
-                            <Skeleton className="h-4 w-full mb-2" />
-                            <Skeleton className="h-4 w-2/3" />
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
-        </div>
-    );
-}
+// export function Loading() {
+//     return (
+//         <div className="container mx-auto px-4 py-8 min-h-screen">
+//             <div className="flex flex-col md:flex-row items-center justify-between mb-8">
+//                 <Skeleton className="h-10 w-48 mb-4 md:mb-0" />
+//                 <Skeleton className="h-10 w-32" />
+//             </div>
+//             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//                 {[...Array(6)].map((_, i) => (
+//                     <Card key={i}>
+//                         <CardHeader>
+//                             <Skeleton className="h-4 w-2/3 mb-2" />
+//                             <Skeleton className="h-4 w-1/2" />
+//                         </CardHeader>
+//                         <CardContent>
+//                             <Skeleton className="h-[200px] w-full mb-4" />
+//                             <Skeleton className="h-4 w-full mb-2" />
+//                             <Skeleton className="h-4 w-2/3" />
+//                         </CardContent>
+//                     </Card>
+//                 ))}
+//             </div>
+//         </div>
+//     );
+// }
