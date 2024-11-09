@@ -23,8 +23,6 @@ export const Header = ({ user }: { user: User | undefined }) => {
     { href: "/help", label: "Help & Support" },
   ];
 
-  // |
-
   const pathname = usePathname();
 
   return (
@@ -33,7 +31,7 @@ export const Header = ({ user }: { user: User | undefined }) => {
     >
       <div className="flex h-full max-w-[1800px] items-center justify-between px-2 sm:container">
         <h3 className="text-2xl md:text-3xl font-bold tracking-tight">
-          <Link href="/">Knight Domicile</Link>
+          <Link href="/" className="text-black">Knight <span className="text-[#e8c248]">Domicile</span></Link>
         </h3>
 
         <div className="md:hidden">
@@ -53,9 +51,9 @@ export const Header = ({ user }: { user: User | undefined }) => {
 
                 <div className="mt-auto w-full">
                   <div className="mb-2 flex items-center gap-4 rounded-md bg-muted p-4">
-                    <span className="flex size-12 items-center justify-center rounded-full bg-primary text-white">
+                    {/* <span className="flex size-12 items-center justify-center rounded-full bg-primary text-white">
                       {user?.name?.[0] ?? <CircleUserRound />}
-                    </span>
+                    </span> */}
                     <div className="">
                       <p className="text-lg font-semibold capitalize">
                         {user?.name}
